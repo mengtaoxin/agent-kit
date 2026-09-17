@@ -6,7 +6,7 @@ description: >-
   markdown, outdated structure docs, contradictions, and unclear guidance;
   proposes a plan; then applies fixes. Use when the user asks to optimize the
   project per skills kit requirements, improve agent customization, clean up
-  agent docs/rules/skills, or says phrases like "根据skills kit的要求，帮助我优化项目".
+  agent docs/rules/skills".
 license: MIT
 metadata:
   author: mengtaoxin
@@ -63,9 +63,9 @@ Map what exists under the scope paths. Note missing expected files (e.g. no `AGE
 
 Compare docs/rules/skills against the **actual** repo structure and each other. Record findings as concrete items:
 
-| ID | Severity | Path(s) | Problem | Proposed fix |
-| --- | --- | --- | --- | --- |
-| F1 | high/med/low | `path` | short problem statement | short fix |
+| ID  | Severity     | Path(s) | Problem                 | Proposed fix |
+| --- | ------------ | ------- | ----------------------- | ------------ |
+| F1  | high/med/low | `path`  | short problem statement | short fix    |
 
 Severity guide:
 
