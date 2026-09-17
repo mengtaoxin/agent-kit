@@ -6,6 +6,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 
 | Skill | Description |
 | --- | --- |
+| [`fix`](./skills/fix/) | Assess and improve agent customization (skills, rules, MCP, AGENTS.md, docs, scripts) |
 | [`test-driven-development`](./skills/test-driven-development/) | Mandatory Red→Green→Refactor workflow when changing behavior |
 
 ## Install
@@ -38,6 +39,8 @@ npx skills add mengtaoxin/agent-kit -l
 
 ```text
 skills/
+  fix/
+    SKILL.md
   test-driven-development/
     SKILL.md
 ```
