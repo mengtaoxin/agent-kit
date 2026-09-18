@@ -6,7 +6,12 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 
 | Skill | Description |
 | --- | --- |
+| [`fastify-best-practices`](./skills/fastify-best-practices/) | Fastify best practices for plugins, schemas, hooks, errors, testing, and production |
 | [`fix`](./skills/fix/) | Assess and improve agent customization (skills, rules, MCP, AGENTS.md, docs, scripts) |
+| [`javascript-typescript-best-practices`](./skills/javascript-typescript-best-practices/) | Modern JavaScript and TypeScript best practices for writing and reviewing JS/TS |
+| [`material-design-best-practices`](./skills/material-design-best-practices/) | Material Design 3 best practices for color, type, layout, components, motion, and a11y |
+| [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
+| [`react-best-practices`](./skills/react-best-practices/) | Modern React best practices for components, hooks, state, effects, and a11y |
 | [`test-driven-development`](./skills/test-driven-development/) | Mandatory Red→Green→Refactor workflow when changing behavior |
 
 ## Install
@@ -20,7 +25,7 @@ npx skills add mengtaoxin/agent-kit
 Install one skill only:
 
 ```bash
-npx skills add mengtaoxin/agent-kit --skill test-driven-development
+npx skills add mengtaoxin/agent-kit --skill fastify-best-practices
 ```
 
 Install globally (user-level):
@@ -39,7 +44,17 @@ npx skills add mengtaoxin/agent-kit -l
 
 ```text
 skills/
+  fastify-best-practices/
+    SKILL.md
   fix/
+    SKILL.md
+  javascript-typescript-best-practices/
+    SKILL.md
+  material-design-best-practices/
+    SKILL.md
+  mysql-best-practices/
+    SKILL.md
+  react-best-practices/
     SKILL.md
   test-driven-development/
     SKILL.md
