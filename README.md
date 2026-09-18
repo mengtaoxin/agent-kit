@@ -12,7 +12,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`material-design-best-practices`](./skills/material-design-best-practices/) | Material Design 3 best practices for color, type, layout, components, motion, and a11y |
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
 | [`react-best-practices`](./skills/react-best-practices/) | Modern React best practices for components, hooks, state, effects, and a11y |
-| [`test-driven-development`](./skills/test-driven-development/) | Mandatory Red→Green→Refactor workflow when changing behavior |
+| [`test-driven-development`](./skills/test-driven-development/) | Red→Green→Refactor for product behavior; not for declarative toolchain config or mechanical edits |
 
 ## Install
 

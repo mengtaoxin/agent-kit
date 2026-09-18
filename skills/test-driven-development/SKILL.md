@@ -1,37 +1,74 @@
 ---
 name: test-driven-development
 description: >-
-  Mandatory Red→Green→Refactor workflow for agents changing behavior. Use when
-  implementing features, fixing bugs, adding regression guards, or any code
-  change that alters observable behavior. Triggers on TDD, test-first,
-  failing test, behavior change, or before claiming work is done.
+  Red→Green→Refactor for product behavior changes (features, bug fixes,
+  domain/API logic, regression guards). Not for declarative toolchain config,
+  docs, or mechanical edits. Triggers on TDD, test-first, failing test, feature,
+  bug fix, or behavior change in app code.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Test-driven development (for agents)
 
-Mandatory workflow when changing behavior. Follow this guide before and while editing code.
+Use Red→Green→Refactor when changing **product behavior** owned by this repo.
+Do not invent ceremonial tests for config flags or mechanical edits.
 
-Goal: prove the intended behavior with a failing test first, then make that test pass with the smallest change. Do not claim work is done because the implementation “looks right.”
+Goal: prove intended product behavior with a failing test first, then make that
+test pass with the smallest change. Do not claim work is done because the
+implementation “looks right.”
 
-## Non-negotiable cycle
+## When TDD is required
 
-For every behavior change (feature, bug fix, regression guard):
+Apply the full Red→Green→Refactor cycle for:
 
-1. **Red** — Write or extend a test that expresses the desired behavior. Run it. Confirm it fails for the right reason (missing behavior / wrong result), not because of a broken compile, wrong import, or flaky setup.
-2. **Green** — Change production code only enough to make that test pass. No drive-by refactors in this step.
+- Features and bug fixes in app code (application / library source, not tooling-only)
+- Domain rules, mapping, validation, pure helpers with non-trivial logic
+- HTTP / persistence / CRUD contracts
+- Regression guards for bugs that have a meaningful automated hook
+
+## When TDD is out of scope
+
+Skip Red→Green (and do **not** add a test that only mirrors a literal you set)
+for:
+
+- **Docs / comments / pure formatting** — no new test; full suite not required
+- **Generated or mechanical moves** (rename with tool, import reorder) — no new
+  test if behavior is unchanged; still run the full suite before finishing when
+  you touched code
+- **Declarative toolchain / build / dev-server config** that only flips a
+  framework or bundler option (e.g. Vite `strictPort`, ESLint rule, `tsconfig`
+  flag, Playwright CLI already covering the same switch) — change the config;
+  do not write a unit test that asserts `config.foo === true`
+- **Dependency bumps** with no project logic change — rely on existing suites
+- **Spike / exploration** — throwaway code may skip TDD, but delete or redo with
+  Red→Green before keeping it (including the final full suite)
+
+If unsure: TDD applies when the repo owns **logic or contracts**; it does not
+apply when you are only turning on an upstream tool’s built-in switch.
+
+## Non-negotiable cycle (when in scope)
+
+1. **Red** — Write or extend a test that expresses the desired behavior. Run it.
+   Confirm it fails for the right reason (missing behavior / wrong result), not
+   because of a broken compile, wrong import, or flaky setup.
+2. **Green** — Change production code only enough to make that test pass. No
+   drive-by refactors in this step.
 3. **Refactor** — Clean up with tests still green. Keep behavior fixed.
 
-Do not skip Red. Writing implementation first and then a green test is not TDD here.
+Do not skip Red when TDD is in scope. Writing implementation first and then a
+green test is not TDD here.
 
-If you cannot write a meaningful failing test yet, stop and clarify the requirement. Do not invent production code without a behavior contract.
+If you cannot write a meaningful failing test yet, stop and clarify the
+requirement. Do not invent production code without a behavior contract — and do
+not invent a meaningless test just to satisfy this checklist.
 
 ## What to test at which layer
 
-Pick the lowest layer that can lock the behavior. Prefer one focused test over a pile of overlapping ones.
+Pick the lowest layer that can lock the behavior. Prefer one focused test over a
+pile of overlapping ones.
 
 Discover project conventions first:
 
@@ -40,40 +77,52 @@ Discover project conventions first:
 
 Rules of thumb:
 
-- Prefer the lowest layer that can lock the contract; use end-to-end only for user-visible integration.
-- Do not add a second test layer that only duplicates assertions already owned by a lower test, unless you need an integration smoke.
-- Prefer real collaborators over mocks when a lower-layer test can express the contract cleanly.
+- Prefer the lowest layer that can lock the contract; use end-to-end only for
+  user-visible integration.
+- Do not add a second test layer that only duplicates assertions already owned
+  by a lower test, unless you need an integration smoke.
+- Prefer real collaborators over mocks when a lower-layer test can express the
+  contract cleanly.
 
 ## How to run tests
 
-Discover how the project runs tests (`package.json` scripts, `Makefile`, `commands.md`, CI config, or `AGENTS.md`). Run the relevant suite(s) on each Red/Green step. Before finishing, always run the full test suite; do not mark the task done until it passes. Focused tests alone are not enough to finish.
+Discover how the project runs tests (`package.json` scripts, `Makefile`,
+`commands.md`, CI config, or `AGENTS.md`).
 
-## Agent checklist (every behavior change)
+- **When TDD is in scope:** run the relevant focused suite(s) on each Red/Green
+  step. Before finishing, always run the full test suite; focused tests alone
+  are not enough.
+- **When TDD is out of scope:** still run the smallest relevant check if the
+  change can break CI or local workflows (e.g. existing e2e/dev scripts). Do not
+  add a new test solely to “cover” a config literal.
 
-1. If adding or moving files, follow the project’s file-structure / placement conventions.
-2. State the behavior in one sentence (observable outcome, not implementation).
-3. Add/adjust the failing test at the right layer; run it; confirm **Red**.
-4. Implement the minimal fix; run the same test; confirm **Green**.
-5. Refactor if needed; keep tests green.
-6. Update project docs only when project-specific contracts or documented behavior change.
-7. Run the full test suite. Do not mark the task done until it passes.
+## Agent checklist
+
+1. Decide **in scope / out of scope** using the sections above.
+2. If adding or moving files, follow the project’s file-structure / placement
+   conventions.
+3. If **in scope:** state the behavior in one sentence; add the failing test;
+   confirm **Red**; implement; confirm **Green**; refactor if needed.
+4. If **out of scope:** make the minimal change; skip ceremonial tests.
+5. Update project docs only when project-specific contracts or documented
+   behavior change.
+6. Before finishing: run the full suite when you changed product code, or the
+   smallest relevant check for out-of-scope tooling/config. Do not mark the task
+   done until those checks pass.
 
 ## Anti-patterns (do not)
 
 - Implement first, then write a test that mirrors the code you already wrote.
-- Change the test to match buggy production behavior without an explicit product decision.
+- Write a test whose only assertion is that a config flag equals the value you
+  just set.
+- Change the test to match buggy production behavior without an explicit product
+  decision.
 - Broad “rewrite all tests” or unrelated snapshot churn.
 - Skip the preferred lower-layer coverage because mocks “should be enough.”
 - Use end-to-end tests as a substitute for a unit test of a pure helper.
-- Leave tests failing, or leave Red unobserved (never ran the failing test).
-- Claim done after only focused tests; skip the final full suite.
-
-## When a thin exception applies
-
-TDD still applies to behavior. These are not free passes to skip tests:
-
-- **Docs / comments / pure formatting** with no behavior change — no new test required; full suite not required.
-- **Generated or mechanical moves** (rename with tool, import reorder) — no new test if behavior is unchanged; still run the full suite before finishing.
-- **Spike / exploration** — throwaway code may skip TDD, but delete or redo with Red→Green before keeping it (including the final full suite).
-
-If a bug has no reliable automated hook yet, add the smallest test that would have failed before the fix, then fix it.
+- Leave tests failing, or leave Red unobserved (never ran the failing test)
+  when TDD is in scope.
+- Claim done after only focused tests; skip the final full suite when product
+  code changed.
+- Force Red→Green onto declarative toolchain config “because AGENTS.md says
+  TDD.”
