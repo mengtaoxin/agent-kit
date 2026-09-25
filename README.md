@@ -9,10 +9,10 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor port hygiene: free EADDRINUSE carefully, close ports this chat opened; concurrency check only when starting/stopping servers |
 | [`electron-best-practices`](./skills/electron-best-practices/) | Electron process isolation (main / preload / renderer / shared) and IPC surface checklist |
 | [`fastify-best-practices`](./skills/fastify-best-practices/) | Fastify best practices for plugins, schemas, hooks, errors, and production |
-| [`fix`](./skills/fix/) | Assess and improve agent customization (skills, rules, MCP, AGENTS.md, docs, scripts) |
 | [`javascript-typescript-best-practices`](./skills/javascript-typescript-best-practices/) | Modern JavaScript and TypeScript best practices for writing and reviewing JS/TS |
 | [`material-design-best-practices`](./skills/material-design-best-practices/) | Material Design 3 best practices for color, type, layout, components, motion, and a11y |
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
+| [`optimize-agent-customization`](./skills/optimize-agent-customization/) | Assess and improve agent customization (skills, rules, MCP, AGENTS.md, docs, scripts) |
 | [`react-best-practices`](./skills/react-best-practices/) | Modern React best practices for components, hooks, state, effects, and a11y |
 | [`test-driven-development`](./skills/test-driven-development/) | Red→Green→Refactor for product behavior; not for declarative toolchain config or mechanical edits |
 
@@ -52,13 +52,15 @@ skills/
     SKILL.md
   fastify-best-practices/
     SKILL.md
-  fix/
-    SKILL.md
+    references/
   javascript-typescript-best-practices/
     SKILL.md
   material-design-best-practices/
     SKILL.md
+    references/
   mysql-best-practices/
+    SKILL.md
+  optimize-agent-customization/
     SKILL.md
   react-best-practices/
     SKILL.md

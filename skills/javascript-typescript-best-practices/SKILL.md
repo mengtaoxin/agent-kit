@@ -1,15 +1,16 @@
 ---
 name: javascript-typescript-best-practices
 description: >-
-  Apply modern JavaScript and TypeScript best practices when writing or
-  reviewing JS/TS code. Covers types, modules, async, errors, APIs, and
-  maintainability. Use when editing .ts/.tsx/.js/.jsx files, adding TypeScript
-  types, refactoring JS/TS, or when the user mentions TypeScript, JavaScript,
-  ESLint, or JS/TS best practices.
+  Use when writing or reviewing JavaScript/TypeScript that is not React UI:
+  types, modules, async, errors, APIs, and maintainability. Triggers on .ts/.js
+  edits, adding TypeScript types, refactoring JS/TS, ESLint/Biome, or JS/TS
+  best practices. Do not use for React components, hooks, JSX, or .tsx/.jsx UI
+  — prefer react-best-practices for those.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.2.0"
+  version: "1.3.0"
+  docs: https://www.typescriptlang.org/docs/
 ---
 
 # JavaScript & TypeScript best practices

@@ -1,14 +1,14 @@
 ---
 name: test-driven-development
 description: >-
-  Red→Green→Refactor for product behavior changes (features, bug fixes,
+  Use Red→Green→Refactor for product behavior changes (features, bug fixes,
   domain/API logic, regression guards). Not for declarative toolchain config,
-  docs, or mechanical edits. Triggers on TDD, test-first, failing test, feature,
-  bug fix, or behavior change in app code.
+  docs, or mechanical edits. Use when the user mentions TDD, test-first,
+  failing test, feature, bug fix, or behavior change in app code.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Test-driven development (for agents)
