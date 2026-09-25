@@ -9,7 +9,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # JavaScript & TypeScript best practices
@@ -86,7 +86,6 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 - Prefer named exports unless the file has a single primary export and default export is the local convention.
 - Avoid circular imports; extract shared types/helpers when cycles appear.
 - Keep side effects out of import time unless the module is an intentional entrypoint.
-- Colocate tests with existing project patterns (`*.test.ts`, `__tests__/`, etc.).
 
 ## React / JSX (when applicable)
 
@@ -105,8 +104,9 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 ## Tooling
 
 - Follow the project's formatter and linter (Prettier/Biome, ESLint, etc.). Fix violations you introduce.
-- Prefer existing scripts (`package.json`, `pnpm`/`npm`/`yarn`/`bun`) to run typecheck and tests.
+- Prefer existing scripts (`package.json`, `pnpm`/`npm`/`yarn`/`bun`) to run typecheck.
 - After non-trivial TS changes, run the project's typecheck (`tsc --noEmit` or the repo script).
+- Leave writing and running tests to the project's test / TDD skill or docs — do not redefine that workflow here.
 
 ## Anti-patterns (do not)
 
@@ -125,4 +125,4 @@ Before finishing JS/TS work:
 2. Async paths handle failure; no obvious floating promises.
 3. Matches project module/import and naming conventions.
 4. Lints/format for touched files are clean.
-5. Typecheck (and relevant tests) pass when the change warrants it.
+5. Typecheck passes when the change warrants it.

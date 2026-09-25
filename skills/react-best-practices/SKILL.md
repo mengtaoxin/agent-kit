@@ -9,7 +9,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # React best practices
@@ -142,4 +142,6 @@ Before finishing React work:
 3. Hooks follow the rules; dependencies are honest.
 4. A11y basics for new interactive UI (semantics, labels, keyboard).
 5. No default memoization spam; matches project Compiler / performance norms.
-6. Lints for touched files are clean; relevant tests pass when behavior changed.
+6. Lints for touched files are clean.
+
+Behavior changes: follow the project's test / TDD skill or docs for writing and running tests — this skill does not define that workflow.
