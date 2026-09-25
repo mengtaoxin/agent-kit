@@ -6,7 +6,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 
 | Skill | Description |
 | --- | --- |
-| [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor session hygiene: wait on concurrent chats, free occupied ports, close ports before ending |
+| [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor port hygiene: free EADDRINUSE carefully, close ports this chat opened; concurrency check only when starting/stopping servers |
 | [`electron-best-practices`](./skills/electron-best-practices/) | Electron process isolation (main / preload / renderer / shared) and IPC surface checklist |
 | [`fastify-best-practices`](./skills/fastify-best-practices/) | Fastify best practices for plugins, schemas, hooks, errors, testing, and production |
 | [`fix`](./skills/fix/) | Assess and improve agent customization (skills, rules, MCP, AGENTS.md, docs, scripts) |
