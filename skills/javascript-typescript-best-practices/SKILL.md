@@ -9,7 +9,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # JavaScript & TypeScript best practices
@@ -77,7 +77,7 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 ## APIs & data
 
 - Validate untrusted input at boundaries (HTTP, filesystem, user input). Do not trust external JSON shapes.
-- Prefer schemas already used in the project (Zod, Valibot, ArkType, etc.) over ad-hoc checks.
+- Prefer the project's existing validation approach at boundaries over ad-hoc checks.
 - Keep DTOs separate from domain models when the project already does so.
 - Avoid leaking internal types across package/public API surfaces.
 
@@ -86,14 +86,6 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 - Prefer named exports unless the file has a single primary export and default export is the local convention.
 - Avoid circular imports; extract shared types/helpers when cycles appear.
 - Keep side effects out of import time unless the module is an intentional entrypoint.
-
-## React / JSX (when applicable)
-
-- Prefer function components.
-- Treat hooks rules as hard constraints; do not disable them casually.
-- Prefer derived state over redundant `useState` + `useEffect` sync.
-- Prefer declarative effects with clear dependencies; clean up subscriptions/timers.
-- Do not add `useMemo` / `useCallback` by default; follow the project's React Compiler / performance guidance.
 
 ## Security & correctness
 
@@ -106,12 +98,11 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 - Follow the project's formatter and linter (Prettier/Biome, ESLint, etc.). Fix violations you introduce.
 - Prefer existing scripts (`package.json`, `pnpm`/`npm`/`yarn`/`bun`) to run typecheck.
 - After non-trivial TS changes, run the project's typecheck (`tsc --noEmit` or the repo script).
-- Leave writing and running tests to the project's test / TDD skill or docs — do not redefine that workflow here.
 
 ## Anti-patterns (do not)
 
 - `any`, unchecked `as` casts, or `// @ts-ignore` to silence real type errors.
-- Giant God modules / 500+ line components without a clear split.
+- Giant God modules without a clear split.
 - Boolean parameter piles; prefer options objects once arity grows.
 - Commenting out dead code; delete it (version control keeps history).
 - Premature abstraction (shared util with one caller "just in case").

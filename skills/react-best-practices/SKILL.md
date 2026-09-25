@@ -9,7 +9,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # React best practices
@@ -22,7 +22,7 @@ Apply these practices when writing or changing React code. Prefer project conven
 2. Keep components **small and focused** — one clear responsibility per component.
 3. Prefer **composition** over inheritance and over deep prop drilling when context or a shared hook fits better.
 4. Colocate state with the nearest consumer; lift state only when siblings must share it.
-5. Match the project's React version APIs and patterns (Compiler, Server Components, router, data library).
+5. Match the project's React version APIs and patterns (Compiler, router, data library).
 
 ## Components & JSX
 
@@ -99,14 +99,8 @@ useEffect(() => {
 
 - Prefer stable keys and predictable list identity.
 - Prefer controlled forms with a clear single source of truth, or the project's form library (React Hook Form, Conform, etc.).
-- Prefer schemas already used in the project (Zod, etc.) for validation at boundaries.
-- Do not fetch in random child effects if the app has a data library (React Query, SWR, router loaders, Server Components). Match existing data patterns.
-
-## Server Components & client boundaries (when applicable)
-
-- Default to Server Components in frameworks that support them; add `"use client"` only when browser APIs, state, or effects are required.
-- Keep client leaves small; pass serializable props across the server/client boundary.
-- Do not import server-only modules into client components.
+- Prefer the project's existing validation approach at boundaries.
+- Do not fetch in random child effects if the app has a data library (React Query, SWR, router loaders). Match existing data patterns.
 
 ## Accessibility
 
@@ -143,5 +137,3 @@ Before finishing React work:
 4. A11y basics for new interactive UI (semantics, labels, keyboard).
 5. No default memoization spam; matches project Compiler / performance norms.
 6. Lints for touched files are clean.
-
-Behavior changes: follow the project's test / TDD skill or docs for writing and running tests — this skill does not define that workflow.

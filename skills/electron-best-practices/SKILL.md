@@ -10,7 +10,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
   docs: https://www.electronjs.org/docs/latest/
 ---
 
@@ -55,7 +55,6 @@ Do these in order (adapt names to the host project):
 3. **Main handlers** — Register `ipcMain.handle` / `ipcMain.on` in the main IPC module; implement privileged work in main services.
 4. **Preload bridge** — Expose a typed method on the bridged API that invokes the same channel; subscribe to push events if needed and return an unsubscribe function.
 5. **Renderer call sites** — Call only the bridged API (e.g. `window.<api>.…`), never `ipcRenderer` from UI code.
-6. **Tests** — Cover handler/contract logic at the lowest useful layer; add UI tests with a mocked bridged API when behavior is user-visible.
 
 Push/events (main → renderer):
 

@@ -3,14 +3,14 @@ name: fastify-best-practices
 description: >-
   Apply Fastify best practices when writing or reviewing Fastify apps.
   Covers plugins, encapsulation, routes, JSON Schema validation/serialization,
-  hooks, decorators, errors, logging, testing, and production recommendations.
+  hooks, decorators, errors, logging, and production recommendations.
   Use when editing Fastify servers, registering plugins, defining routes,
   schemas, or hooks, or when the user mentions Fastify, fastify-plugin,
   @fastify/*, or Fastify best practices.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
   docs: https://fastify.dev/
 ---
 
@@ -167,22 +167,6 @@ fastify.setErrorHandler((error, request, reply) => {
 - Use **`request.log`** (child logger) in handlers/hooks so logs carry request ids.
 - Prefer structured fields (`{ err, userId }`) over string interpolation alone.
 - Redact secrets (headers, tokens, passwords) via logger `redact` config.
-
-## Testing
-
-- Prefer **`app.inject()`** (light-my-request) — no real TCP listen required.
-- Build the app through the same plugin tree as production (`build()` helper); call `ready()` as needed.
-- Close the app after tests (`after` / `afterAll`) to avoid open handles.
-- Test validation failures, auth hooks, and error-handler mapping — not only happy paths.
-
-```js
-import { build } from './app.js'
-
-const app = await build()
-const res = await app.inject({ method: 'GET', url: '/health' })
-// assert res.statusCode / res.json()
-await app.close()
-```
 
 ## Performance & production
 
