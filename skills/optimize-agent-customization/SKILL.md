@@ -1,19 +1,19 @@
 ---
-name: fix
+name: optimize-agent-customization
 description: >-
-  Assess and improve agent customization for the current project: skills,
-  Cursor rules, MCP config, AGENTS.md, docs, and scripts. Finds overly long
-  markdown, outdated structure docs, contradictions, and unclear guidance;
-  proposes a plan; then applies fixes. Use when the user asks to optimize the
-  project per skills kit requirements, improve agent customization, clean up
-  agent docs/rules/skills".
+  Audit and improve agent customization for the current project: skills,
+  Cursor rules, MCP config, AGENTS.md, docs, and scripts. Finds oversized
+  markdown, stale structure docs, contradictions, unclear guidance, and weak
+  skill metadata; proposes a plan; then applies fixes. Use when the user asks
+  to optimize agent customization, clean up agent docs/rules/skills, or audit
+  AGENTS.md / MCP — not for application bug fixes or product features.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
-# Fix (agent customization)
+# Optimize agent customization
 
 Optimize the current project's **agent customization** surface so agents get accurate, concise, non-contradictory guidance.
 
@@ -47,7 +47,7 @@ Prioritize issues like:
 Copy and track:
 
 ```text
-Fix progress:
+Optimize progress:
 - [ ] 1. Inventory
 - [ ] 2. Assess
 - [ ] 3. Plan (get confirmation if destructive/large)

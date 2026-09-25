@@ -1,16 +1,16 @@
 ---
 name: cursor-local-best-practices
 description: >-
-  Local Cursor port and session hygiene. Free occupied ports on EADDRINUSE,
-  close ports this chat opened before ending, and only check concurrent chats
-  when starting or stopping servers. Use when hitting EADDRINUSE / port-in-use,
-  starting or stopping a local server, finishing a conversation that opened
-  ports, or when the user asks for local session / port hygiene — not for
-  ordinary edits, Q&A, or docs-only work.
+  Use for local Cursor port and session hygiene: free occupied ports on
+  EADDRINUSE, close ports this chat opened before ending, and only check
+  concurrent chats when starting or stopping servers. Use when hitting
+  EADDRINUSE / port-in-use, starting or stopping a local server, finishing a
+  conversation that opened ports, or when the user asks for local session /
+  port hygiene — not for ordinary edits, Q&A, or docs-only work.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Cursor local best practices

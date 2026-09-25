@@ -1,16 +1,16 @@
 ---
 name: mysql-best-practices
 description: >-
-  Apply MySQL best practices when writing or reviewing SQL, schemas, migrations,
-  and application database access. Covers schema design, indexes, queries,
-  transactions, connections, security, and operations. Use when editing .sql
-  files, designing MySQL tables, writing queries/ORMs against MySQL, tuning
-  indexes, or when the user mentions MySQL, InnoDB, migrations, or SQL best
-  practices.
+  Use when writing or reviewing MySQL schemas, queries, migrations, or app DB
+  access. Covers InnoDB schema design, indexes, queries, transactions,
+  connections, security, and operations. Triggers on MySQL/.sql for MySQL,
+  designing MySQL tables, ORMs against MySQL, index tuning, InnoDB, or MySQL
+  migrations. Do not use for Postgres, SQLite, or generic SQL that is not MySQL.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
+  docs: https://dev.mysql.com/doc/
 ---
 
 # MySQL best practices

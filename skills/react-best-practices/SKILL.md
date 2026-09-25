@@ -1,15 +1,15 @@
 ---
 name: react-best-practices
 description: >-
-  Apply modern React best practices when writing or reviewing React code.
-  Covers components, hooks, state, effects, composition, performance, and
-  accessibility. Use when editing .tsx/.jsx files, building UI, refactoring
-  React components, fixing hooks/effects bugs, or when the user mentions
-  React, hooks, JSX, or React best practices.
+  Use when writing or reviewing React UI: components, hooks, state, effects,
+  composition, performance, and accessibility. Triggers on .tsx/.jsx edits,
+  building UI, refactoring React components, fixing hooks/effects bugs, or when
+  the user mentions React, hooks, JSX, or React best practices.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.2.0"
+  version: "1.3.0"
+  docs: https://react.dev/
 ---
 
 # React best practices

@@ -1,16 +1,15 @@
 ---
 name: electron-best-practices
 description: >-
-  Apply Electron best practices for process isolation and IPC surfaces.
-  Covers main / preload / renderer / shared boundaries, contextBridge,
-  channel constants, and a checklist when adding or changing IPC.
-  Use when editing Electron main, preload, renderer, or shared contracts,
-  adding ipcMain/ipcRenderer handlers, contextBridge APIs, or when the user
-  mentions Electron, preload, IPC, contextBridge, or process boundaries.
+  Use when editing Electron process boundaries or IPC: main / preload /
+  renderer / shared, contextBridge, channel constants, and ipcMain/ipcRenderer
+  handlers. Triggers on Electron main/preload/renderer work, contextBridge APIs,
+  or when the user mentions Electron, preload, IPC, contextBridge, or process
+  boundaries.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "1.2.0"
   docs: https://www.electronjs.org/docs/latest/
 ---
 
@@ -76,3 +75,14 @@ Security defaults:
 - Growing preload into a second business layer (DB, multi-step workflows, heavy parsing).
 - Putting React components or router screens under the main-process tree.
 - Shipping only a main handler or only a preload method without the matching contract and call site.
+
+## Agent checklist
+
+Before finishing Electron IPC or process-boundary work:
+
+1. New/changed APIs update channel constants, shared types, main handlers, preload bridge, and renderer call sites together.
+2. Renderer never imports main; UI talks to main only through the preload bridge.
+3. Preload stays thin; privileged work lives in main.
+4. Shared modules stay isomorphic (no Electron main / Node FS).
+5. `contextIsolation: true` and `nodeIntegration: false` unless the project documents an exception.
+6. Privileged inputs are validated/authorized in main.
