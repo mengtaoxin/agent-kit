@@ -3,19 +3,19 @@ name: javascript-typescript-best-practices
 description: >-
   Use when writing or reviewing JavaScript/TypeScript that is not React UI:
   types, modules, async, errors, APIs, and maintainability. Triggers on .ts/.js
-  edits, adding TypeScript types, refactoring JS/TS, ESLint/Biome, or JS/TS
+  edits, adding TypeScript types, refactoring JS/TS, oxlint/oxfmt, or JS/TS
   best practices. Do not use for React components, hooks, JSX, or .tsx/.jsx UI
   — prefer react-best-practices for those.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.3.0"
+  version: "1.4.0"
   docs: https://www.typescriptlang.org/docs/
 ---
 
 # JavaScript & TypeScript best practices
 
-Apply these practices when writing or changing JavaScript/TypeScript. Prefer project conventions when they conflict; discover them first (`tsconfig`, ESLint/Biome, existing modules).
+Apply these practices when writing or changing JavaScript/TypeScript. Prefer project conventions when they conflict; discover them first (`tsconfig`, oxlint/oxfmt, existing modules).
 
 ## Defaults
 
@@ -96,8 +96,8 @@ const [a, b] = await Promise.all([fetchA(), fetchB()]);
 
 ## Tooling
 
-- Follow the project's formatter and linter (Prettier/Biome, ESLint, etc.). Fix violations you introduce.
-- Prefer existing scripts (`package.json`, `pnpm`/`npm`/`yarn`/`bun`) to run typecheck.
+- Prefer **oxlint** for linting and **oxfmt** for formatting when adding or migrating tooling. If the project already has a linter/formatter, follow that and fix violations you introduce.
+- Prefer existing scripts (`package.json`, `pnpm`/`npm`/`yarn`/`bun`) to run lint, format, and typecheck.
 - After non-trivial TS changes, run the project's typecheck (`tsc --noEmit` or the repo script).
 
 ## Anti-patterns (do not)
