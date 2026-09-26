@@ -6,6 +6,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 
 | Skill | Description |
 | --- | --- |
+| [`cursor-cloud-best-practices`](./skills/cursor-cloud-best-practices/) | Cursor Cloud Agent hygiene: avoid using computer use for screen recording |
 | [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor port hygiene: free EADDRINUSE carefully, close ports this chat opened; concurrency check only when starting/stopping servers |
 | [`electron-best-practices`](./skills/electron-best-practices/) | Electron process isolation (main / preload / renderer / shared) and IPC surface checklist |
 | [`fastify-best-practices`](./skills/fastify-best-practices/) | Fastify best practices for plugins, schemas, hooks, errors, and production |
@@ -46,6 +47,8 @@ npx skills add mengtaoxin/agent-kit -l
 
 ```text
 skills/
+  cursor-cloud-best-practices/
+    SKILL.md
   cursor-local-best-practices/
     SKILL.md
   electron-best-practices/
