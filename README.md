@@ -15,6 +15,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
 | [`optimize-agent-customization`](./skills/optimize-agent-customization/) | Assess and improve agent customization (skills, rules, MCP, AGENTS.md, docs, scripts) |
 | [`react-best-practices`](./skills/react-best-practices/) | Modern React best practices for components, hooks, state, effects, and a11y |
+| [`save-web-page`](./skills/save-web-page/) | Save a URL as one offline HTML file (inlined CSS + base64 images) via the browser |
 | [`test-driven-development`](./skills/test-driven-development/) | Red→Green→Refactor for product behavior; not for declarative toolchain config or mechanical edits |
 
 ## Install
@@ -67,6 +68,9 @@ skills/
     SKILL.md
   react-best-practices/
     SKILL.md
+  save-web-page/
+    SKILL.md
+    scripts/
   test-driven-development/
     SKILL.md
 ```
