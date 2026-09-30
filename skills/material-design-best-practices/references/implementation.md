@@ -28,10 +28,6 @@ Prefer theme `palette` / MD3 theme extras, `sx` or tokens over one-off styles; u
 
 Use documented component APIs and design tokens; avoid restyling shadow DOM internals.
 
-### Jetpack Compose
-
-Use `MaterialTheme` color/type/shape; prefer Material3 composables (`FilledTonalButton`, `Scaffold`, etc.).
-
 ### Flutter
 
 Use `ThemeData` / `ColorScheme.fromSeed` and Material 3 widgets; avoid hard-coded `Colors.*` in product UI.
