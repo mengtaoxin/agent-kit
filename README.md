@@ -15,6 +15,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`optimize-agent-customization`](./skills/optimize-agent-customization/) | Assess and improve agent customization (skills, rules, MCP, AGENTS.md, docs, scripts) |
 | [`react-best-practices`](./skills/react-best-practices/) | Modern React best practices for components, hooks, state, effects, and a11y |
 | [`save-web-page`](./skills/save-web-page/) | Save a URL as one offline HTML file (inlined CSS + base64 images) via the browser |
+| [`task-divide-and-conquer`](./skills/task-divide-and-conquer/) | Split a big task into serial subtasks tracked in a markdown file; run one subtask per conversation, end with a commit |
 | [`test-driven-development`](./skills/test-driven-development/) | Red→Green→Refactor for product behavior; not for declarative toolchain config or mechanical edits |
 
 ## Install
@@ -67,6 +68,8 @@ skills/
   save-web-page/
     SKILL.md
     scripts/
+  task-divide-and-conquer/
+    SKILL.md
   test-driven-development/
     SKILL.md
 ```
