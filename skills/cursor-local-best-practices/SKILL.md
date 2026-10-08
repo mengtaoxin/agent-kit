@@ -2,15 +2,16 @@
 name: cursor-local-best-practices
 description: >-
   Use for local Cursor port and session hygiene: free occupied ports on
-  EADDRINUSE, close ports this chat opened before ending, and only check
-  concurrent chats when starting or stopping servers. Use when hitting
-  EADDRINUSE / port-in-use, starting or stopping a local server, finishing a
-  conversation that opened ports, or when the user asks for local session /
-  port hygiene — not for ordinary edits, Q&A, or docs-only work.
+  EADDRINUSE, close ports this chat opened before ending, only check
+  concurrent chats when starting or stopping servers, and leave commits and
+  other chats' working-tree changes alone. Use when hitting EADDRINUSE /
+  port-in-use, starting or stopping a local server, finishing a conversation
+  that opened ports or changed files, or when the user asks for local session /
+  port hygiene.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Cursor local best practices
@@ -26,11 +27,13 @@ Apply this skill only when one of these is true:
 - Binding or freeing a **port** (dev server, preview, proxy, tunnel)
 - Hitting **`EADDRINUSE`** / “port already in use”
 - **Ending** a conversation that opened ports in this chat
+- **Finishing** a conversation that changed files (only the
+  [commits section](#finishing--commits-and-other-chats-changes))
 - The user **explicitly** asks for local session / port hygiene
 
-Do **not** apply for ordinary code edits, reviews, Q&A, docs, or tests that do
-not start a long-lived listener. Parallel chats in the same repo are allowed
-for that work.
+The port rules do **not** apply to ordinary code edits, reviews, Q&A, docs, or
+tests that do not start a long-lived listener. Parallel chats in the same repo
+are allowed for that work.
 
 ## Rules
 
@@ -48,6 +51,12 @@ for that work.
 Do this only when about to start a **dev server, preview, proxy, or other
 long-lived port binder** — not before every edit.
 
+0. If the server is only for **verifying a change** in the browser, first
+   prefer an automated test through the project's scripts (unit / component /
+   e2e; e2e runners usually start their own servers on free ports). Start a dev
+   server for browser checks only for what a test cannot express (visual layout,
+   look and feel), and prefer an accessibility snapshot over screenshots, which
+   cost far more context.
 1. Identify the current workspace / repo root.
 2. Check project `terminals` metadata (and similar) for an **active** command
    in this repo that already holds the target port or the same kind of server.
@@ -90,3 +99,12 @@ ports, or the user asked for cleanup):
 
 If the user asked to leave a server running, say so and leave it; otherwise
 default to closing ports opened here.
+
+## Finishing — commits and other chats' changes
+
+Other chats and the user often edit the same working tree in parallel, and the
+user commits. Unless the user or the host project's workflow asks otherwise:
+
+- Do not commit, offer to commit, or report commit state.
+- Do not run `git status` / `git diff` to review the tree at the end, and do not
+  inspect or comment on changes this chat did not make.
