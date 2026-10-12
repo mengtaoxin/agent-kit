@@ -9,6 +9,7 @@ Reusable [Agent Skills](https://agentskills.io/) pack. Skills here are installed
 - **Prefer stack/domain guidance over product guidance.** Technology and workflow skills (e.g. React, Fastify, MySQL, TDD) are in scope; one product’s feature playbook is not.
 - **Discover, then apply.** When a skill conflicts with the host project’s conventions, prefer the host project and discover those conventions first.
 - **Keep skills installable.** Each skill lives under `skills/<name>/SKILL.md` with valid frontmatter (`name`, `description`). Keep `description` third-person with clear WHAT + WHEN triggers.
+- **Bump the version on every change.** Any edit to a skill’s files must bump `metadata.version` in its `SKILL.md` (semver): patch for wording, typo, or link fixes; minor for new or changed guidance; major for removed or reversed rules or a changed trigger scope.
 - **Stay concise.** Prefer short `SKILL.md` files; put deep detail in linked sibling files only when needed (one level deep).
 - **Keep README in sync.** When adding, renaming, or removing a skill, update the Skills table and Layout tree in `README.md`.
 

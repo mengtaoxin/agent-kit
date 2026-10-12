@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.3.0"
+  version: "1.3.1"
 ---
 
 # Cursor local best practices
@@ -28,7 +28,7 @@ Apply this skill only when one of these is true:
 - Hitting **`EADDRINUSE`** / “port already in use”
 - **Ending** a conversation that opened ports in this chat
 - **Finishing** a conversation that changed files (only the
-  [commits section](#finishing--commits-and-other-chats-changes))
+  **Finishing — commits and other chats' changes** section below)
 - The user **explicitly** asks for local session / port hygiene
 
 The port rules do **not** apply to ordinary code edits, reviews, Q&A, docs, or
