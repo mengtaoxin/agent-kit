@@ -11,14 +11,14 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.3.1"
+  version: "1.3.2"
 ---
 
 # Cursor local best practices
 
 Apply when the agent runs in a **local** Cursor environment (same machine and
 workspace as the user). Goal: leave ports free for the next chat or the user’s
-own debugging, without blocking ordinary parallel chats.
+own debugging.
 
 ## When to apply
 
@@ -32,8 +32,7 @@ Apply this skill only when one of these is true:
 - The user **explicitly** asks for local session / port hygiene
 
 The port rules do **not** apply to ordinary code edits, reviews, Q&A, docs, or
-tests that do not start a long-lived listener. Parallel chats in the same repo
-are allowed for that work.
+tests that do not start a long-lived listener.
 
 ## Rules
 
@@ -67,7 +66,6 @@ long-lived port binder** — not before every edit.
    - Prefer reusing that server, or ask whether to stop it — do **not** enter a
      multi-minute wait loop, and do **not** abort the whole conversation for
      unrelated edits.
-5. Never block ordinary (non-server) work because another chat is active.
 
 ## During the conversation — occupied ports
 
