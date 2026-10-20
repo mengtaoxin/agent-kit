@@ -10,7 +10,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Task divide and conquer
@@ -32,7 +32,7 @@ conversations, so it must always be accurate.
 | Status | Meaning |
 | --- | --- |
 | `In progress` | Created; subtasks remain |
-| `Completed` | All subtasks done, including the commit |
+| `Completed` | All subtasks done, including the commit message offered to the user |
 | `Failed` | Task design problem found; reason recorded |
 | `Cancelled` | Stopped, usually by the user |
 
@@ -58,7 +58,7 @@ such a task. A redesign means a new parent task (new file).
 
 - [x] 1. Create parent task
 - [ ] 2. <Subtask title>
-- [ ] <N>. Commit changes
+- [ ] <N>. Propose a commit message
 
 ## Subtasks
 
@@ -77,11 +77,11 @@ such a task. A redesign means a new parent task (new file).
 - **Acceptance**: <How to verify: tests, build, manual check.>
 - **Result**: —
 
-### <N>. Commit changes
+### <N>. Propose a commit message
 
 - **Status**: Pending
-- **Goal**: Commit all changes made by this task.
-- **Acceptance**: Commit created; working tree clean for task-related files.
+- **Goal**: Draft a commit message for this task's changes and hand it to the user. Do not commit.
+- **Acceptance**: The reply contains a commit message; this subtask created no commit.
 - **Result**: —
 ```
 
@@ -99,7 +99,8 @@ Conversation 1 only plans; it does not start subtask 2.
    - have concrete acceptance criteria;
    - leave the project in a working state where practical.
 3. Fixed bookends: subtask 1 is **Create parent task** (already `Done` when
-   the file is written); the last subtask is **Commit changes**.
+   the file is written); the last subtask is **Propose a commit message**
+   (draft the message only; never commit).
 4. Write the file from the template with status `In progress`.
 5. Reply with the file path, the subtask list, and the prompt to continue in
    a **new** conversation, e.g.
@@ -121,17 +122,19 @@ Conversation 1 only plans; it does not start subtask 2.
 6. Stop. Reply with what was done and the prompt for the next conversation.
    Do not start the next subtask, even if time allows.
 
-### Commit subtask (last)
+### Commit-message subtask (last)
 
-1. Review the diff; stage files changed by this task (include the task file
-   unless the host project ignores `docs-task-divide-and-conquer/`). Follow
-   the host repo's commit message style and hooks.
-2. Before committing, mark the subtask `Done`, the parent `Completed`, and
-   update `Progress`/`Updated`, so the committed file is final.
-3. If the commit fails (hook, conflict), fix it if the fix is in scope;
-   otherwise revert those marks to `Pending` / `In progress`, record the
-   problem in `Result`, and report. A failing hook is not a design failure.
-4. Do not push unless the user asks.
+The user decides whether to commit. Do not commit, stage, or push — some host
+projects forbid the agent from committing on its own.
+
+1. Review the diff of this task's changes (include the task file unless the
+   host project ignores `docs-task-divide-and-conquer/`).
+2. Draft one commit message in the host repo's style. Mark this subtask
+   `Done`, the parent `Completed`, and update `Progress`/`Updated`, so the
+   task file is final. Put the message in `Result`.
+3. Reply with the message and say the user may commit with it if they want.
+4. Stop. If the user does not commit, commits differently, or anything else
+   happens, do nothing further.
 
 ## Edge cases
 
