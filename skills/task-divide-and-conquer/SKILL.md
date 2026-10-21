@@ -2,22 +2,76 @@
 name: task-divide-and-conquer
 description: >-
   Splits a large user request into a parent task with serial subtasks tracked
-  in a markdown file under `docs-task-divide-and-conquer/`, then executes one
-  subtask per conversation so no single chat grows too long or runs too long.
+  in a markdown file under `docs-task-divide-and-conquer/`. An orchestrator
+  runs one subtask per sub-agent so no single context grows too long. Hosts
+  without sub-agents fall back to one subtask per conversation.
   Use when the user asks to divide and conquer a big task, split work across
-  multiple conversations, create a parent task / subtasks, continue or resume
-  a task file, or cancel one; also when they mention task-divide-and-conquer.
+  sub-agents or multiple conversations, create a parent task / subtasks,
+  continue or resume a task file, or cancel one; also when they mention
+  task-divide-and-conquer.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Task divide and conquer
 
 One parent task → N subtasks, executed **serially**, **one subtask per
-conversation**. A markdown task file is the only shared state between
-conversations, so it must always be accurate.
+isolated context**. A markdown task file is the only shared state between
+contexts, so it must always be accurate.
+
+When the host can launch sub-agents, an **orchestrator** runs the chain and
+each subtask runs in its own **executor** sub-agent. When it cannot, fall
+back to one subtask per new conversation.
+
+## Roles
+
+### Orchestrator
+
+The conversation that created the task, or any later conversation told to
+continue it, when sub-agents are available.
+
+- Do not implement subtask 2 or later in this context.
+- Launch **one** executor at a time, for the first `Pending` subtask only.
+  Wait until it finishes, then re-read the task file. Decide the next step
+  from the file, not from the sub-agent transcript.
+- Between subtasks, post one short status line. Do not ask the user to
+  confirm before continuing.
+- Stop when the parent status is `Failed`, `Completed`, or `Cancelled`, or
+  when the user cancels. On `Completed`, relay the commit message from the
+  last subtask's `Result`.
+- If the executor returns and that subtask is still `Pending`, report that
+  it did not finish and stop. Do not launch another executor for it.
+
+Executor prompt (use the real path):
+
+```text
+Execute the first Pending subtask in docs-task-divide-and-conquer/<file>.md (task-divide-and-conquer). You are the executor: do only that subtask, update the task file, and return a short summary. Do not launch sub-agents or start the next subtask.
+```
+
+If this chain is interrupted, a new conversation resumes it with:
+
+```text
+Orchestrate task docs-task-divide-and-conquer/<file>.md (task-divide-and-conquer): run each remaining subtask in its own sub-agent, serially.
+```
+
+### Executor
+
+A sub-agent launched with the executor prompt. Follow Mode B for exactly one
+subtask. Return a few lines: what changed, subtask status, parent status.
+Do not launch sub-agents.
+
+### Fallback (no sub-agents)
+
+Run Mode B in this conversation, then stop and hand the user:
+
+```text
+Continue task docs-task-divide-and-conquer/<file>.md in a new conversation (task-divide-and-conquer).
+```
+
+A conversation that receives that prompt, and can launch sub-agents, becomes
+the orchestrator instead of executing the subtask inline.
 
 ## Task file
 
@@ -89,12 +143,12 @@ Subtask statuses: `Pending`, `Done`, `Failed`.
 
 ## Mode A: create the parent task
 
-Conversation 1 only plans; it does not start subtask 2.
+This conversation only plans. It does not implement subtask 2 itself.
 
 1. Clarify the requirement if it is ambiguous; explore the codebase enough to
    plan (conventions, affected areas, test/build commands).
 2. Split into serial subtasks. Each subtask must:
-   - fit comfortably in one conversation (bounded files, bounded time);
+   - fit comfortably in one isolated context (bounded files, bounded time);
    - depend only on earlier subtasks;
    - have concrete acceptance criteria;
    - leave the project in a working state where practical.
@@ -102,9 +156,9 @@ Conversation 1 only plans; it does not start subtask 2.
    the file is written); the last subtask is **Propose a commit message**
    (draft the message only; never commit).
 4. Write the file from the template with status `In progress`.
-5. Reply with the file path, the subtask list, and the prompt to continue in
-   a **new** conversation, e.g.
-   `Continue task docs-task-divide-and-conquer/<file>.md (task-divide-and-conquer)`.
+5. If sub-agents are available, become the orchestrator and run the chain.
+   Otherwise reply with the file path, the subtask list, and the fallback
+   continue prompt.
 
 ## Mode B: run the next subtask
 
@@ -119,8 +173,10 @@ Conversation 1 only plans; it does not start subtask 2.
    - subtask `Status: Done`, fill `Result` (what changed, files, anything the
      next subtask must know);
    - tick its checklist box, bump `Progress` and `Updated`.
-6. Stop. Reply with what was done and the prompt for the next conversation.
-   Do not start the next subtask, even if time allows.
+6. Stop. Do not start the next subtask.
+   - Executor: return the short summary to the orchestrator.
+   - Fallback: reply with what was done and the continue prompt for a new
+     conversation.
 
 ### Commit-message subtask (last)
 
@@ -133,6 +189,7 @@ projects forbid the agent from committing on its own.
    `Done`, the parent `Completed`, and update `Progress`/`Updated`, so the
    task file is final. Put the message in `Result`.
 3. Reply with the message and say the user may commit with it if they want.
+   The orchestrator relays that message when the executor returns.
 4. Stop. If the user does not commit, commits differently, or anything else
    happens, do nothing further.
 
@@ -148,7 +205,7 @@ far larger than planned, or the requirement contradicts the codebase.
 3. Set parent `Status: Failed` and `Failure reason`: which subtask, what was
    wrong, and what a redesigned task should change.
 4. **Do not revert** local changes already made; list them in the reply.
-5. Stop and report.
+5. Stop and report. The orchestrator launches no further executors.
 
 Ordinary bugs or failing tests inside a subtask's scope are not design
 failures — fix them as part of the subtask.
@@ -156,10 +213,11 @@ failures — fix them as part of the subtask.
 ### User cancels
 
 Set parent `Status: Cancelled` (add the reason if given) and `Updated`. Do not
-revert local changes unless the user asks.
+revert local changes unless the user asks. The orchestrator launches no
+further executors.
 
 ### File and reality disagree
 
-If the file says `Pending` but the work appears done (e.g. a previous chat
+If the file says `Pending` but the work appears done (e.g. a previous context
 ended before updating), verify against the acceptance criteria, then mark it
 `Done` with a note instead of redoing it.
