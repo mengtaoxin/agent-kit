@@ -2,15 +2,16 @@
 name: optimize-agent-customization
 description: >-
   Audit and improve agent customization for the current project: skills,
-  Cursor rules, MCP config, AGENTS.md, docs, and scripts. Finds oversized
-  markdown, stale structure docs, contradictions, unclear guidance, and weak
-  skill metadata; proposes a plan; then applies fixes. Use when the user asks
-  to optimize agent customization, clean up agent docs/rules/skills, or audit
-  AGENTS.md / MCP — not for application bug fixes or product features.
+  Cursor rules, MCP config, AGENTS.md, and docs. Finds oversized markdown,
+  stale structure docs, contradictions, unclear guidance, and weak skill
+  metadata; proposes a plan; then applies fixes. Use when the user asks to
+  optimize agent customization, clean up agent docs/rules/skills, or audit
+  AGENTS.md / MCP — not for application bug fixes, product features, or
+  program-entry scripts.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "2.0.0"
 ---
 
 # Optimize agent customization
@@ -26,9 +27,10 @@ Only these paths (and close equivalents if the project uses a variant layout):
 - `.cursor/mcp.json`
 - `AGENTS.md`
 - `docs/**`
-- `scripts/**`
 
-Do **not** treat application source code, product features, or unrelated refactors as in scope unless they are required to keep a customization file truthful.
+`scripts/**` is **out of scope**. Many projects use it for main program entries, so do not inventory, rewrite, or clean up those files as agent customization. A customization file may still name a script; if that reference is wrong, fix the customization file.
+
+Do **not** treat application source code, product features, or unrelated refactors as in scope unless a customization file must change to stay truthful.
 
 ## What to look for
 
@@ -87,7 +89,7 @@ Implement the agreed plan inside the scope:
 - Align structure docs with the real tree
 - Resolve contradictions (pick the truth from the repo; update all dependents)
 - Clarify vague instructions; tighten skill `description` WHAT + WHEN (third person)
-- Fix or remove dead links/scripts/references
+- Fix or remove dead links and references in customization files
 - Keep project voice and existing skill/rule conventions
 
 Do not expand scope into product code “while you’re here.”
@@ -97,7 +99,7 @@ Do not expand scope into product code “while you’re here.”
 Re-check touched files:
 
 - [ ] No remaining contradictions among edited docs/rules/skills
-- [ ] Paths and script names resolve
+- [ ] Paths and referenced names in customization files resolve
 - [ ] Markdown splits have working relative links
 - [ ] Skill frontmatter still valid (`name`, `description`)
 - [ ] Summary of what changed and what was deferred
@@ -117,4 +119,4 @@ After assessment (and again after apply), report:
 - Adding new skills/rules unrelated to found issues
 - “Improving” wording so much that project conventions are lost
 - Leaving two sources of truth after resolving a contradiction
-- Scope creep into application source outside customization paths
+- Scope creep into application source or `scripts/**` outside customization paths
