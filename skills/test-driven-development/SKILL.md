@@ -8,7 +8,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.5.0"
+  version: "1.6.0"
 ---
 
 # Test-driven development (for agents)
@@ -60,10 +60,11 @@ writing code or a hollow test.
 
 ## Running
 
-Use the project's scripts (`package.json`, `Makefile`, `AGENTS.md`). Run focused
-tests on each Red / Green step; before finishing run the full suites (or the
-project's single finish / verify command) when product code changed, or the
-smallest relevant check for out-of-scope config. Not done until they pass.
+Use the project's scripts (`package.json`, `Makefile`, `AGENTS.md`). Prefer the
+test scope the project already agrees to — some projects want the full suite on
+every run. When it does not say, use this skill's default: the smallest check
+that covers the change (focused tests on each Red / Green step, and that same
+check again before finishing). Not done until that run passes.
 
 ## Do not
 
@@ -72,4 +73,5 @@ smallest relevant check for out-of-scope config. Not done until they pass.
 - Change a test to match buggy behavior without a product decision.
 - Churn unrelated tests or snapshots.
 - Use e2e as a substitute for a unit test of a pure helper.
-- Leave Red unobserved, tests failing, or finish on focused runs alone.
+- Leave Red unobserved, tests failing, or finish without the run the project
+  requires — or the smallest covering check when the project does not say.
