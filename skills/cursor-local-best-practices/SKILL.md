@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.4.0"
+  version: "1.5.0"
 ---
 
 # Cursor local best practices
@@ -50,12 +50,6 @@ tests that do not start a long-lived listener.
 Do this only when about to start a **dev server, preview, proxy, or other
 long-lived port binder** — not before every edit.
 
-0. If the server is only for **verifying a change** in the browser, first
-   prefer an automated test through the project's scripts (unit / component /
-   e2e; e2e runners usually start their own servers on free ports). Start a dev
-   server for browser checks only for what a test cannot express (visual layout,
-   look and feel), and prefer an accessibility snapshot over screenshots, which
-   cost far more context.
 1. Identify the current workspace / repo root.
 2. Check project `terminals` metadata (and similar) for an **active** command
    in this repo that already holds the target port or the same kind of server.
