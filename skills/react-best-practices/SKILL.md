@@ -1,20 +1,26 @@
 ---
 name: react-best-practices
 description: >-
-  Use when writing or reviewing React UI: components, hooks, state, effects,
-  composition, performance, and accessibility. Triggers on .tsx/.jsx edits,
-  building UI, refactoring React components, fixing hooks/effects bugs, or when
-  the user mentions React, hooks, JSX, or React best practices.
+  Use when writing or reviewing browser-rendered React UI: components, hooks,
+  state, effects, composition, performance, and accessibility. These rules are
+  for client-side rendering in the browser, not server-side rendering. Triggers
+  on client .tsx/.jsx edits, building browser UI, refactoring client React
+  components, fixing hooks/effects bugs, or when the user mentions client-side
+  React, hooks, JSX, or React best practices. Do not use for server-rendered
+  stacks such as Next.js (SSR, React Server Components, server actions, or
+  server-only data fetching).
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.3.0"
+  version: "2.0.0"
   docs: https://react.dev/
 ---
 
 # React best practices
 
-Apply these practices when writing or changing React code. Prefer project conventions when they conflict; discover them first (`package.json`, ESLint/Biome React plugins, React Compiler config, existing components).
+These rules are for **browser (client) rendering**. Apply them when writing or changing React that runs in the browser. They are not for server-side rendering. Do not apply them to Next.js or other SSR stacks (React Server Components, server actions, server-only data fetching, or server-rendered pages).
+
+Prefer project conventions when they conflict; discover them first (`package.json`, ESLint/Biome React plugins, React Compiler config, existing components).
 
 ## Defaults
 
