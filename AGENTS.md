@@ -10,6 +10,7 @@ Reusable [Agent Skills](https://agentskills.io/) pack. Skills here are installed
 - **Discover, then apply.** When a skill conflicts with the host project’s conventions, prefer the host project and discover those conventions first.
 - **Keep skills installable.** Each skill lives under `skills/<name>/SKILL.md` with valid frontmatter (`name`, `description`). Keep `description` third-person with clear WHAT + WHEN triggers.
 - **Bump the version on every change.** Any edit to a skill’s files must bump `metadata.version` in its `SKILL.md` (semver): patch for wording, typo, or link fixes; minor for new or changed guidance; major for removed or reversed rules or a changed trigger scope.
+- **Confirm major version bumps.** Do not raise `metadata.version` to a new major until the user confirms. Patch and minor bumps still apply on every change without a separate confirmation.
 - **Stay concise.** Prefer short `SKILL.md` files; put deep detail in linked sibling files only when needed (one level deep).
 - **Keep README in sync.** When adding, renaming, or removing a skill, update the Skills table and Layout tree in `README.md`.
 
