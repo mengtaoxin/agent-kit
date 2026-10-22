@@ -12,7 +12,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`javascript-typescript-best-practices`](./skills/javascript-typescript-best-practices/) | Modern JavaScript and TypeScript best practices for writing and reviewing JS/TS |
 | [`material-design-best-practices`](./skills/material-design-best-practices/) | Material Design 3 best practices for color, type, layout, components, motion, and a11y |
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
-| [`optimize-agent-customization`](./skills/optimize-agent-customization/) | Assess and improve agent customization (skills, rules, MCP, AGENTS.md, docs) |
+| [`optimize-agent-customization`](./skills/optimize-agent-customization/) | Audit agent customization (skills, rules, MCP, AGENTS.md, docs) and recommend high-priority fixes before editing |
 | [`react-best-practices`](./skills/react-best-practices/) | Browser-rendered React best practices for components, hooks, state, effects, and a11y; not for SSR stacks such as Next.js |
 | [`save-web-page`](./skills/save-web-page/) | Save a URL as one offline HTML file (inlined CSS + base64 images) via the browser |
 | [`task-divide-and-conquer`](./skills/task-divide-and-conquer/) | Split a big task into serial subtasks tracked in a markdown file; run one subtask per sub-agent (or per conversation if sub-agents are unavailable), end by offering a commit message |
