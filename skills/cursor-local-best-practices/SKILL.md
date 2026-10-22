@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.3.2"
+  version: "1.4.0"
 ---
 
 # Cursor local best practices
@@ -72,9 +72,11 @@ long-lived port binder** — not before every edit.
 When binding a port fails (e.g. `EADDRINUSE`, “port already in use”) or a needed
 port is already taken:
 
-1. Find the process listening on that port (`lsof`, `ss`, `netstat`, or OS
-   equivalent).
-2. If the holder was **started by this chat** → stop it, then retry.
+1. Identify what is holding the port from what this chat and the environment
+   already show (the session that started it, project tooling, or another
+   method that works here). Do not require a particular command.
+2. If the holder was **started by this chat** → stop it in a way that fits how
+   it was started, then retry.
 3. If the holder looks like the **user’s** or **another chat’s** intentional
    server → tell the user; stop it only if they confirm, or if they already
    asked you to free that port. Prefer a graceful stop when practical.
@@ -89,10 +91,14 @@ preview, proxies, one-off listeners).
 Before the final reply / handoff for this conversation (when this chat opened
 ports, or the user asked for cleanup):
 
-1. Stop processes this chat started that still hold ports (dev servers,
-   watchers, tunnels, etc.).
-2. Confirm those ports are free.
-3. Do **not** kill unrelated user processes or servers started outside this
+1. Shut down each server this chat started that still holds a port (dev
+   servers, watchers, tunnels, etc.). Pick a stop method that fits how that
+   process was started and what this environment actually provides — the same
+   session, the project's own stop path, or another method that works. Do not
+   require one specific command; projects and machines vary, and a named tool
+   may not exist.
+2. Confirm those ports are free, without assuming a particular command.
+3. Do **not** stop unrelated user processes or servers started outside this
    chat, unless the user confirmed freeing that port.
 
 If the user asked to leave a server running, say so and leave it; otherwise
