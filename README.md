@@ -9,6 +9,8 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`cursor-cloud-best-practices`](./skills/cursor-cloud-best-practices/) | Cursor Cloud Agent hygiene: avoid using computer use for screen recording |
 | [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor port hygiene: free EADDRINUSE carefully, close ports this chat opened; concurrency check only when starting/stopping servers; leave commits and other chats' changes alone |
 | [`electron-best-practices`](./skills/electron-best-practices/) | Electron process isolation (main / preload / renderer / shared) and IPC surface checklist |
+| [`issue-create`](./skills/issue-create/) | Create one open GitHub issue for the current request, with a label the user names; leave it open and do not implement it |
+| [`issue-queue-process`](./skills/issue-queue-process/) | Drain open GitHub issues that carry a label the user names, one sub-agent at a time: one local commit per solved issue, no push; roll a failed attempt back to its baseline and continue |
 | [`javascript-typescript-best-practices`](./skills/javascript-typescript-best-practices/) | Modern JavaScript and TypeScript best practices for writing and reviewing JS/TS |
 | [`material-design-best-practices`](./skills/material-design-best-practices/) | Material Design 3 best practices for color, type, layout, components, motion, and a11y |
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
@@ -16,7 +18,6 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`save-web-page`](./skills/save-web-page/) | Save a URL as one offline HTML file (inlined CSS + base64 images) via the browser |
 | [`swift-best-practices`](./skills/swift-best-practices/) | Swift API shape, value and reference types, optionals, errors, access control, and concurrency; no UI architecture or concurrency migration |
 | [`task-divide-and-conquer`](./skills/task-divide-and-conquer/) | Split a big task into serial subtasks tracked in a markdown file; run one subtask per sub-agent (or per conversation if sub-agents are unavailable), end by offering a commit message |
-| [`task-issue-queue`](./skills/task-issue-queue/) | File the current request as a GitHub issue labeled task-issue-queue, or drain that queue serially: one local commit per solved issue, no push; roll a failed attempt back to its baseline and continue |
 | [`test-driven-development`](./skills/test-driven-development/) | Red→Green→Refactor for product behavior; not for declarative toolchain config or mechanical edits |
 
 ## Install
@@ -55,6 +56,10 @@ skills/
     SKILL.md
   electron-best-practices/
     SKILL.md
+  issue-create/
+    SKILL.md
+  issue-queue-process/
+    SKILL.md
   javascript-typescript-best-practices/
     SKILL.md
   material-design-best-practices/
@@ -70,8 +75,6 @@ skills/
   swift-best-practices/
     SKILL.md
   task-divide-and-conquer/
-    SKILL.md
-  task-issue-queue/
     SKILL.md
   test-driven-development/
     SKILL.md
