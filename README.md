@@ -16,7 +16,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`react-best-practices`](./skills/react-best-practices/) | Browser-rendered React best practices for components, hooks, state, effects, and a11y; not for SSR stacks such as Next.js |
 | [`save-web-page`](./skills/save-web-page/) | Save a URL as one offline HTML file (inlined CSS + base64 images) via the browser |
 | [`task-divide-and-conquer`](./skills/task-divide-and-conquer/) | Split a big task into serial subtasks tracked in a markdown file; run one subtask per sub-agent (or per conversation if sub-agents are unavailable), end by offering a commit message |
-| [`task-issue-queue`](./skills/task-issue-queue/) | File the current request as a GitHub issue labeled task-issue-queue, or drain that queue serially: parent passes the issue URL, sub-agent closes successes with no commit or marks failures, then the parent continues |
+| [`task-issue-queue`](./skills/task-issue-queue/) | File the current request as a GitHub issue labeled task-issue-queue, or drain that queue serially: one local commit per solved issue, no push; roll a failed attempt back to its baseline and continue |
 | [`test-driven-development`](./skills/test-driven-development/) | Red→Green→Refactor for product behavior; not for declarative toolchain config or mechanical edits |
 
 ## Install
