@@ -2,9 +2,10 @@
 name: task-divide-and-conquer
 description: >-
   Splits a large user request into a parent task with serial subtasks tracked
-  in a markdown file under `.task-divide-and-conquer/`. An orchestrator
-  runs one subtask per sub-agent so no single context grows too long. Hosts
-  without sub-agents fall back to one subtask per conversation.
+  in a markdown file under `.task-divide-and-conquer/`. After the plan is
+  written, wait for the user to confirm before running further subtasks. An
+  orchestrator then runs one subtask per sub-agent so no single context grows
+  too long. Hosts without sub-agents fall back to one subtask per conversation.
   Use when the user asks to divide and conquer a big task, split work across
   sub-agents or multiple conversations, create a parent task / subtasks,
   continue or resume a task file, or cancel one; also when they mention
@@ -12,7 +13,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.3.0"
+  version: "1.4.0"
 ---
 
 # Task divide and conquer
@@ -20,6 +21,10 @@ metadata:
 One parent task → N subtasks, executed **serially**, **one subtask per
 isolated context**. A markdown task file is the only shared state between
 contexts, so it must always be accurate.
+
+After Mode A writes the plan, **wait for the user to confirm** before any
+further subtask runs. Confirmation is once per plan; resume / continue /
+orchestrate prompts also count. Between later subtasks, do not re-ask.
 
 When the host can launch sub-agents, an **orchestrator** runs the chain and
 each subtask runs in its own **executor** sub-agent. When it cannot, fall
@@ -33,11 +38,13 @@ The conversation that created the task, or any later conversation told to
 continue it, when sub-agents are available.
 
 - Do not implement subtask 2 or later in this context.
+- Only start the chain after the user has confirmed the plan (see Mode A),
+  or after they asked to continue / orchestrate an existing task file.
 - Launch **one** executor at a time, for the first `Pending` subtask only.
   Wait until it finishes, then re-read the task file. Decide the next step
   from the file, not from the sub-agent transcript.
 - Between subtasks, post one short status line. Do not ask the user to
-  confirm before continuing.
+  confirm again before continuing.
 - Stop when the parent status is `Failed`, `Completed`, or `Cancelled`, or
   when the user cancels. On `Completed`, relay the commit message from the
   last subtask's `Result`.
@@ -156,9 +163,15 @@ This conversation only plans. It does not implement subtask 2 itself.
    the file is written); the last subtask is **Propose a commit message**
    (draft the message only; never commit).
 4. Write the file from the template with status `In progress`.
-5. If sub-agents are available, become the orchestrator and run the chain.
-   Otherwise reply with the file path, the subtask list, and the fallback
-   continue prompt.
+5. Reply with the file path and the subtask list. Ask the user to **confirm**
+   whether to run the remaining subtasks. Stop here — do not launch
+   executors, become the orchestrator, or start Mode B until they confirm.
+6. After the user confirms (for example yes / confirm / go ahead / continue):
+   - If sub-agents are available, become the orchestrator and run the chain.
+   - Otherwise reply with the fallback continue prompt.
+   If they decline or want changes, stop. Do not start the chain. On a
+   redesign request, create a new parent task (new file) rather than silently
+   rewriting this one.
 
 ## Mode B: run the next subtask
 
