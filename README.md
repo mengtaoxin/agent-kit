@@ -7,13 +7,14 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | Skill | Description |
 | --- | --- |
 | [`cursor-cloud-best-practices`](./skills/cursor-cloud-best-practices/) | Cursor Cloud Agent hygiene: avoid using computer use for screen recording |
-| [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor port hygiene: free EADDRINUSE carefully, close ports this chat opened; concurrency check only when starting/stopping servers; leave commits and other chats' changes alone |
+| [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor finishing hygiene: do not commit or inspect the working tree at the end unless asked; leave other chats' changes alone (ports → `port-and-process-management`) |
 | [`electron-best-practices`](./skills/electron-best-practices/) | Electron process isolation (main / preload / renderer / shared) and IPC surface checklist |
 | [`issue-create`](./skills/issue-create/) | Create one open GitHub issue for the current request, with a label the user names; leave it open and do not implement it |
 | [`issue-queue-process`](./skills/issue-queue-process/) | Drain open GitHub issues that carry a label the user names, one sub-agent at a time: one local commit per solved issue, no push; roll a failed attempt back to its baseline and continue |
 | [`javascript-typescript-best-practices`](./skills/javascript-typescript-best-practices/) | Modern JavaScript and TypeScript best practices for writing and reviewing JS/TS |
 | [`material-design-best-practices`](./skills/material-design-best-practices/) | Material Design 3 best practices for color, type, layout, components, motion, and a11y |
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
+| [`port-and-process-management`](./skills/port-and-process-management/) | Local port and long-lived process hygiene: free EADDRINUSE carefully, stop servers/watchers this chat started; concurrency check only when starting/stopping |
 | [`react-best-practices`](./skills/react-best-practices/) | Browser-rendered React best practices for components, hooks, state, effects, and a11y; not for SSR stacks such as Next.js |
 | [`save-web-page`](./skills/save-web-page/) | Save a URL as one offline HTML file (inlined CSS + base64 images) via the browser |
 | [`swift-best-practices`](./skills/swift-best-practices/) | Swift API shape, value and reference types, optionals, errors, access control, and concurrency; no UI architecture or concurrency migration |
@@ -66,6 +67,8 @@ skills/
     SKILL.md
     references/
   mysql-best-practices/
+    SKILL.md
+  port-and-process-management/
     SKILL.md
   react-best-practices/
     SKILL.md
