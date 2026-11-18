@@ -9,8 +9,6 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`cursor-cloud-best-practices`](./skills/cursor-cloud-best-practices/) | Cursor Cloud Agent hygiene: avoid using computer use for screen recording |
 | [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor finishing hygiene: do not commit or inspect the working tree at the end unless asked; leave other chats' changes alone (ports → `port-and-process-management`) |
 | [`electron-best-practices`](./skills/electron-best-practices/) | Electron process isolation (main / preload / renderer / shared) and IPC surface checklist |
-| [`issue-create`](./skills/issue-create/) | Create one open GitHub issue for the current request, with a label the user names; leave it open and do not implement it |
-| [`issue-queue-process`](./skills/issue-queue-process/) | Drain open GitHub issues that carry a label the user names, one sub-agent at a time: one local commit per solved issue, no push; roll a failed attempt back to its baseline and continue |
 | [`javascript-typescript-best-practices`](./skills/javascript-typescript-best-practices/) | Modern JavaScript and TypeScript best practices for writing and reviewing JS/TS |
 | [`material-design-best-practices`](./skills/material-design-best-practices/) | Material Design 3 best practices for color, type, layout, components, motion, and a11y |
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
@@ -56,10 +54,6 @@ skills/
   cursor-local-best-practices/
     SKILL.md
   electron-best-practices/
-    SKILL.md
-  issue-create/
-    SKILL.md
-  issue-queue-process/
     SKILL.md
   javascript-typescript-best-practices/
     SKILL.md
