@@ -10,6 +10,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`cursor-local-best-practices`](./skills/cursor-local-best-practices/) | Local Cursor finishing hygiene: do not commit or inspect the working tree at the end unless asked; leave other chats' changes alone (ports → `port-and-process-management`) |
 | [`electron-best-practices`](./skills/electron-best-practices/) | Electron process isolation (main / preload / renderer / shared) and IPC surface checklist |
 | [`javascript-typescript-best-practices`](./skills/javascript-typescript-best-practices/) | Modern JavaScript and TypeScript best practices for writing and reviewing JS/TS |
+| [`make-plan`](./skills/make-plan/) | Create a `.plans/yyyyMMdd-<name>.md` implementation plan (`draft` with open questions, or `ready`); refine until ready; never implement |
 | [`material-design-best-practices`](./skills/material-design-best-practices/) | Material Design 3 best practices for color, type, layout, components, motion, and a11y |
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
 | [`port-and-process-management`](./skills/port-and-process-management/) | Local port and long-lived process hygiene: free EADDRINUSE carefully, stop servers/watchers this chat started; concurrency check only when starting/stopping |
@@ -56,6 +57,8 @@ skills/
   electron-best-practices/
     SKILL.md
   javascript-typescript-best-practices/
+    SKILL.md
+  make-plan/
     SKILL.md
   material-design-best-practices/
     SKILL.md
