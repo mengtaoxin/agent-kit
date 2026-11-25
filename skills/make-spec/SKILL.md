@@ -12,7 +12,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Make spec
@@ -80,7 +80,7 @@ after writing or promoting a spec.
 ### Q1. <Question>
 
 - **Why it matters**: <Brief.>
-- **Options** (optional): A / B / …
+- **Options** (optional): A / B / … — order by recommendation strength, strongest first.
 - **Recommendation** (optional): <Preferred option and why.>
 
 ## Acceptance criteria
@@ -98,7 +98,8 @@ after writing or promoting a spec.
      write the file as `ready` (no Open questions section).
    - **Anything material is unclear** → write as `draft` and list every open
      question. Options and a recommendation are encouraged so the user can
-     choose quickly; they are not required.
+     choose quickly; they are not required. When listing options, put the
+     strongest recommendation first, then the rest in descending preference.
 4. Create `.specs/` if needed, resolve a unique path (suffix if colliding),
    write the file.
 5. Reply with the path and status.
