@@ -15,7 +15,7 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents. Install into
 | [`mysql-best-practices`](./skills/mysql-best-practices/) | MySQL best practices for schemas, indexes, queries, transactions, and secure access |
 | [`port-and-process-management`](./skills/port-and-process-management/) | Local port and long-lived process hygiene: free EADDRINUSE carefully, stop servers/watchers this chat started; concurrency check only when starting/stopping |
 | [`react-best-practices`](./skills/react-best-practices/) | Browser-rendered React best practices for components, hooks, state, effects, and a11y; not for SSR stacks such as Next.js |
-| [`resolve-issue`](./skills/resolve-issue/) | Pick the oldest open `issue-status-ready` GitHub issue via `gh`, implement it, commit and push with `Fix #<n>` for auto-close |
+| [`resolve-issue`](./skills/resolve-issue/) | Implement a named or oldest-open `issue-status-ready` GitHub issue via `gh`, commit/push with `Fix #<n>`, then mark `done`, unlabel, and close |
 | [`save-web-page`](./skills/save-web-page/) | Save a URL as one offline HTML file (inlined CSS + base64 images) via the browser |
 | [`swift-best-practices`](./skills/swift-best-practices/) | Swift API shape, value and reference types, optionals, errors, access control, and concurrency; no UI architecture or concurrency migration |
 | [`task-divide-and-conquer`](./skills/task-divide-and-conquer/) | Split a big task into serial subtasks tracked in a markdown file; wait for user confirm after the plan, then run one subtask per sub-agent (or per conversation if sub-agents are unavailable), end by offering a commit message |

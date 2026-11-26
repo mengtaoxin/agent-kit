@@ -5,13 +5,14 @@ description: >-
   implementation spec: YAML front matter for status/created/updated,
   body with goal/context/approach/acceptance criteria. Starts as
   `draft` with open questions or `ready` when clear; refines until
-  `ready`; may mark `done`. Never implements. Use when the user asks
-  to make an issue, draft a spec as an issue, clarify a make-issue
-  issue, or mentions make-issue / make-spec.
+  `ready`; may mark `done`. Never implements — do not use when the
+  user asks to implement, resolve, or work the ready issue queue
+  (`resolve-issue`). Use when the user asks to make an issue, draft a
+  spec as an issue, clarify a make-issue issue, or mentions make-issue.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Make issue

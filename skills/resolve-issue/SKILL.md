@@ -1,22 +1,26 @@
 ---
 name: resolve-issue
 description: >-
-  Picks the oldest open GitHub issue labeled `issue-status-ready` via local
-  `gh`, implements it on the current branch, then commits and pushes with a
-  message that references the issue (e.g. `Fix #<n>`) so GitHub can auto-close
-  it. Stops if `gh` is missing or unauthorized. Use when the user asks to
-  resolve an issue, pick up a ready issue, work the issue queue, or mentions
+  Implements an open GitHub issue labeled `issue-status-ready` via local
+  `gh`: if the user names `#n` or an issue URL, do that issue; otherwise
+  pick the oldest ready. Implements on the current branch, commits and
+  pushes with `Fix #<n>`, then sets front matter `status: done`, removes
+  `issue-status-ready`, and closes the issue (do not rely only on
+  auto-close). Never drafts or refines specs (`make-issue`). Stops if
+  `gh` is missing or unauthorized. Use when the user asks to resolve an
+  issue, pick up a ready issue, work the issue queue, or mentions
   resolve-issue.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Resolve issue
 
-Implement the oldest **open** GitHub issue that has label
-`issue-status-ready`, then commit and push on the **current** branch.
+Implement an **open** GitHub issue labeled `issue-status-ready`, then
+commit and push on the **current** branch, and close it out of the ready
+queue.
 
 ## Prerequisite: `gh`
 
@@ -40,10 +44,13 @@ web UI, or any other workaround.
 Run the prerequisite checks above. On failure, stop and prompt the user to
 fix the environment.
 
-### 2. Fetch the oldest ready issue
+### 2. Choose the issue
 
-List open issues with label `issue-status-ready`, ordered by creation time
-ascending, take the first:
+- If the user named an issue (`#n`, URL, or number): use that issue. It
+  must be **open** and have label `issue-status-ready`; otherwise stop and
+  say why.
+- Otherwise list open issues with label `issue-status-ready`, oldest
+  first, and take the first:
 
 ```bash
 gh issue list \
@@ -86,9 +93,9 @@ or host project already requires it).
    Fix #<n>: <short summary of what changed>
    ```
 
-   Prefer `Fix #<n>` (also acceptable: `Fixes #<n>`, `Closes #<n>`). The
-   keyword + `#<n>` must appear so GitHub can link and auto-close the issue
-   when the commit lands on the default branch.
+   Prefer `Fix #<n>` (also acceptable: `Fixes #<n>`, `Closes #<n>`). Keep
+   the keyword + `#<n>` so GitHub can link the commit (and auto-close if
+   it later lands on the default branch).
 3. Push the current branch to its remote (`git push`, or `git push -u`
    if upstream is missing).
 
@@ -96,11 +103,43 @@ Follow the host project's commit / git safety rules (no force push, no
 hook skips, no secrets). If commit or push fails: stop and report the
 error; do not invent a workaround that drops the issue reference.
 
+### 5. Mark done and leave the ready queue
+
+After a successful push, **always** close out the issue — do not rely only
+on `Fix #<n>` auto-close (that only runs when the commit reaches the
+default branch; a feature-branch push often leaves the issue open and
+still labeled ready).
+
+1. Update the issue body via `--body-file`: set front matter
+   `status: done`, keep `created`, set `updated` to today's local date.
+   Leave Goal / Context / Approach / Acceptance criteria intact; do not
+   reintroduce Open questions.
+2. Remove the ready label:
+
+   ```bash
+   gh issue edit <n> --remove-label issue-status-ready
+   ```
+
+3. If the issue is still open, close it:
+
+   ```bash
+   gh issue close <n>
+   ```
+
+If body edit, unlabel, or close fails: stop and report the error; do not
+leave a successful code push paired with a still-`ready` open issue without
+telling the user.
+
 ## Do not
 
 - Invent a workaround when `gh` is unavailable or unauthorized.
-- Pick a newer issue when an older open `issue-status-ready` issue exists.
+- When the user did **not** name an issue, pick a newer ready issue while
+  an older open `issue-status-ready` issue exists.
+- When the user **did** name `#n` / a URL, ignore that target in favor of
+  queue order (unless that issue is ineligible).
 - Implement issues that are closed or lack label `issue-status-ready`.
 - Skip the commit message issue reference (`Fix #<n>` or equivalent).
+- Skip the post-push done / unlabel / close step after a successful push.
+- Draft, create, or refine a make-issue-style spec under this skill.
 - Wait for plan confirmation when using `task-divide-and-conquer` under
   this skill — proceed directly.
