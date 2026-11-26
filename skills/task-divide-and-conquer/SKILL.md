@@ -2,7 +2,7 @@
 name: task-divide-and-conquer
 description: >-
   Splits a large user request into a parent task with serial subtasks tracked
-  in a markdown file under `.task-divide-and-conquer/`. After the plan is
+  in a markdown file under `.local/task-divide-and-conquer/`. After the plan is
   written, wait for the user to confirm before running further subtasks.
   An orchestrator then runs one subtask per sub-agent so no single context
   grows too long. Hosts without sub-agents fall back to one subtask per
@@ -13,7 +13,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.8.0"
+  version: "1.9.0"
 ---
 
 # Task divide and conquer
@@ -53,13 +53,13 @@ continue it, when sub-agents are available.
 Executor prompt (use the real path):
 
 ```text
-Execute the first Pending subtask in .task-divide-and-conquer/<file>.md (task-divide-and-conquer). You are the executor: do only that subtask, update the task file, and return a short summary. Do not launch sub-agents or start the next subtask.
+Execute the first Pending subtask in .local/task-divide-and-conquer/<file>.md (task-divide-and-conquer). You are the executor: do only that subtask, update the task file, and return a short summary. Do not launch sub-agents or start the next subtask.
 ```
 
 If this chain is interrupted, a new conversation resumes it with:
 
 ```text
-Orchestrate task .task-divide-and-conquer/<file>.md (task-divide-and-conquer): run each remaining subtask in its own sub-agent, serially.
+Orchestrate task .local/task-divide-and-conquer/<file>.md (task-divide-and-conquer): run each remaining subtask in its own sub-agent, serially.
 ```
 
 ### Executor
@@ -73,7 +73,7 @@ Do not launch sub-agents.
 Run Mode B in this conversation, then stop and hand the user:
 
 ```text
-Continue task .task-divide-and-conquer/<file>.md in a new conversation (task-divide-and-conquer).
+Continue task .local/task-divide-and-conquer/<file>.md in a new conversation (task-divide-and-conquer).
 ```
 
 A conversation that receives that prompt, and can launch sub-agents, becomes
@@ -81,8 +81,8 @@ the orchestrator instead of executing the subtask inline.
 
 ## Task file
 
-- Directory: `.task-divide-and-conquer/` at the project root (create if
-  missing). The leading dot keeps these files out of the project's docs tree.
+- Directory: `.local/task-divide-and-conquer/` at the project root (create if
+  missing). Under `.local/` so task files stay out of the project's docs tree.
 - Name: `<YYYYMMDD>-<kebab-slug>.md`; never overwrite an existing file.
 - Write the content in the user's language. No task file exists unless a
   parent task was created.
@@ -179,7 +179,7 @@ This conversation only plans. It does not implement subtask 2 itself.
 ## Mode B: run the next subtask
 
 1. Locate the task file: use the one the user named; otherwise list files in
-   `.task-divide-and-conquer/` with status `In progress` — use it if there
+   `.local/task-divide-and-conquer/` with status `In progress` — use it if there
    is exactly one, else ask.
 2. If the status is terminal, report it and stop.
 3. Pick the **first** `Pending` subtask. Read the requirement and the
