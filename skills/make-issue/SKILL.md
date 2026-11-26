@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Make issue
@@ -76,6 +76,11 @@ implementation after writing or promoting an issue. Set `done` only
 when the user asks to mark it done; then close the GitHub issue with
 `gh issue close <n>`.
 
+Whenever `status` is `ready` (on create or when promoting from
+`draft`), also add the GitHub issue label `issue-status-ready`. If the
+label does not exist in the repo, create it first
+(`gh label create issue-status-ready`), then attach it.
+
 ### Template
 
 ```markdown
@@ -134,23 +139,30 @@ updated: <yyyy-MM-dd>
    ```bash
    # create
    gh issue create --title "<title>" --body-file <path>
+   # if status is ready:
+   # gh issue create --title "<title>" --body-file <path> --label issue-status-ready
 
    # update body (and title if needed)
    gh issue edit <n> --body-file <path>
    # optional: gh issue edit <n> --title "<title>"
+   # if status is (now) ready:
+   # gh issue edit <n> --add-label issue-status-ready
    ```
 
    On create, set `created` and `updated` to today's local date. On
-   update, keep `created`, set `updated` to today. If `gh issue create`
-   / `edit` / `close` fails (permissions, network, missing issue):
+   update, keep `created`, set `updated` to today. When `status` is
+   `ready`, ensure label `issue-status-ready` is present (create the
+   label in the repo if missing). If `gh issue create` / `edit` /
+   `close` / `label` fails (permissions, network, missing issue):
    **stop** and tell the user to fix `gh` / repo permissions. Do not
    retry with a different storage approach.
 6. Reply with the issue URL (or `#n`) and status.
    - `draft`: summarize open questions; ask the user to answer them.
      As answers arrive, update the same issue: resolve questions, refresh
      Approach / Acceptance criteria, bump `updated`. When none remain,
-     set `status: ready`, remove Open questions, and stop.
-   - `ready`: stop. Do not implement.
+     set `status: ready`, remove Open questions, add label
+     `issue-status-ready`, and stop.
+   - `ready`: confirm label `issue-status-ready`; stop. Do not implement.
    - `done`: confirm closed; stop.
 
 ## Do not
