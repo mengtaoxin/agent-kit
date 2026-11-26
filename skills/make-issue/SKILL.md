@@ -5,14 +5,16 @@ description: >-
   implementation spec: YAML front matter for status/created/updated,
   body with goal/context/approach/acceptance criteria. Starts as
   `draft` with open questions or `ready` when clear; refines until
-  `ready`; may mark `done`. Never implements — do not use when the
-  user asks to implement, resolve, or work the ready issue queue
-  (`resolve-issue`). Use when the user asks to make an issue, draft a
-  spec as an issue, clarify a make-issue issue, or mentions make-issue.
+  `ready`; may mark `done`. Never implements — even if the user asks
+  to implement in the same turn after the issue is ready; hand off to
+  `resolve-issue` instead. Do not use when the user asks only to
+  implement, resolve, or work the ready issue queue. Use when the user
+  asks to make an issue, draft a spec as an issue, clarify a
+  make-issue issue, or mentions make-issue.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.2.0"
+  version: "1.3.1"
 ---
 
 # Make issue
@@ -31,7 +33,8 @@ edit an issue, then stops. It is **not** Cursor's Plan mode.
 - Do **not** use Cursor's built-in Plan UI / `CreatePlan` tool.
 - Do **not** switch to Ask mode.
 - After the issue is `ready` / `done` (or the user has the open
-  questions), end the turn. Implementation is out of scope.
+  questions), end the turn. Implementation is out of scope — even if
+  the user also asked to implement in the same message.
 
 ## Prerequisite: `gh`
 
@@ -74,13 +77,18 @@ body in the user's language.
 
 `ready` is the normal end state of drafting. Do not start
 implementation after writing or promoting an issue. Set `done` only
-when the user asks to mark it done; then close the GitHub issue with
-`gh issue close <n>`.
+when the user asks to mark it done (no code under this skill).
 
-Whenever `status` is `ready` (on create or when promoting from
-`draft`), also add the GitHub issue label `issue-status-ready`. If the
-label does not exist in the repo, create it first
-(`gh label create issue-status-ready`), then attach it.
+### Label `issue-status-ready`
+
+Keep the GitHub label in sync with front matter `status`:
+
+| Front matter | Label action |
+| --- | --- |
+| `ready` | Ensure `issue-status-ready` is present (create the label in the repo if missing, then attach) |
+| `draft` or `done` | Remove `issue-status-ready` if present |
+
+When marking `done`, also close the GitHub issue with `gh issue close <n>`.
 
 ### Template
 
@@ -134,7 +142,7 @@ updated: <yyyy-MM-dd>
    - **Anything material is unclear** → `draft` and list every open
      question. Options and a recommendation are encouraged; when listing
      options, strongest recommendation first.
-   - **User asks to mark complete** → `done`, then close the issue.
+   - **User asks to mark complete** → `done`, then unlabel and close.
 5. Create or update via `gh` (prefer `--body-file` for multiline bodies):
 
    ```bash
@@ -148,12 +156,15 @@ updated: <yyyy-MM-dd>
    # optional: gh issue edit <n> --title "<title>"
    # if status is (now) ready:
    # gh issue edit <n> --add-label issue-status-ready
+   # if status is draft or done (and label may exist):
+   # gh issue edit <n> --remove-label issue-status-ready
+   # if status is done:
+   # gh issue close <n>
    ```
 
    On create, set `created` and `updated` to today's local date. On
-   update, keep `created`, set `updated` to today. When `status` is
-   `ready`, ensure label `issue-status-ready` is present (create the
-   label in the repo if missing). If `gh issue create` / `edit` /
+   update, keep `created`, set `updated` to today. Apply the label
+   table above on every create/update. If `gh issue create` / `edit` /
    `close` / `label` fails (permissions, network, missing issue):
    **stop** and tell the user to fix `gh` / repo permissions. Do not
    retry with a different storage approach.
@@ -162,16 +173,21 @@ updated: <yyyy-MM-dd>
      As answers arrive, update the same issue: resolve questions, refresh
      Approach / Acceptance criteria, bump `updated`. When none remain,
      set `status: ready`, remove Open questions, add label
-     `issue-status-ready`, and stop.
-   - `ready`: confirm label `issue-status-ready`; stop. Do not implement.
-   - `done`: confirm closed; stop.
+     `issue-status-ready`, and stop (hand off — do not implement).
+   - `ready`: confirm label `issue-status-ready`; tell the user they can
+     implement with `resolve-issue` (e.g. resolve `#n`); stop. Do not
+     implement.
+   - `done`: confirm unlabelled and closed; stop.
 
 ## Do not
 
 - Write local `.specs/` (or any other) markdown files for this skill.
 - Switch into Cursor Plan mode, Ask mode, or use `CreatePlan` / the Plan UI.
-- Implement, scaffold, or partially code the issue under this skill.
+- Implement, scaffold, or partially code the issue under this skill
+  (hand off to `resolve-issue` instead).
 - Leave a `draft` without Open questions, or a `ready`/`done` issue with
   unresolved questions.
+- Leave `issue-status-ready` on a `draft` or `done` issue, or omit it on
+  `ready`.
 - Invent a workaround when `gh` is unavailable or unauthorized.
 - Treat this skill as a task runner or sub-agent orchestrator.

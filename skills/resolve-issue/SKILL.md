@@ -4,16 +4,16 @@ description: >-
   Implements an open GitHub issue labeled `issue-status-ready` via local
   `gh`: if the user names `#n` or an issue URL, do that issue; otherwise
   pick the oldest ready. Implements on the current branch, commits and
-  pushes with `Fix #<n>`, then sets front matter `status: done`, removes
-  `issue-status-ready`, and closes the issue (do not rely only on
-  auto-close). Never drafts or refines specs (`make-issue`). Stops if
-  `gh` is missing or unauthorized. Use when the user asks to resolve an
-  issue, pick up a ready issue, work the issue queue, or mentions
-  resolve-issue.
+  pushes with `Fix #<n>` (push is required by this skill), then sets
+  front matter `status: done`, removes `issue-status-ready`, and closes
+  the issue (do not rely only on auto-close). Never drafts or refines
+  specs (`make-issue`); if the target is not ready, stop and point to
+  `make-issue`. Use when the user asks to resolve an issue, pick up a
+  ready issue, work the issue queue, or mentions resolve-issue.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.1.0"
+  version: "1.2.1"
 ---
 
 # Resolve issue
@@ -47,8 +47,9 @@ fix the environment.
 ### 2. Choose the issue
 
 - If the user named an issue (`#n`, URL, or number): use that issue. It
-  must be **open** and have label `issue-status-ready`; otherwise stop and
-  say why.
+  must be **open** and have label `issue-status-ready`; otherwise stop,
+  say why, and if it is still a draft/spec, tell them to clarify or promote
+  it with `make-issue` first.
 - Otherwise list open issues with label `issue-status-ready`, oldest
   first, and take the first:
 
@@ -74,16 +75,38 @@ gh issue view <n> --comments
 Implement the issue in the host project. Discover conventions from the repo
 (`package.json`, tests, docs, `AGENTS.md`) rather than assuming them.
 
-If the work is a **heavy** task, apply **`task-divide-and-conquer`**
-immediately — do **not** wait for user confirmation of the plan; run the
-divide-and-conquer flow straight through to completion of this issue.
+Treat the work as **heavy** (use `task-divide-and-conquer`) when any of
+these hold: multiple modules or layers, large unknown surface, or a plan
+that clearly needs more than ~5 bounded steps. Otherwise implement in
+this conversation.
 
-Otherwise implement in this conversation.
+#### When using `task-divide-and-conquer`
+
+This skill **owns** the end-to-end issue lifecycle. Overrides while under
+`resolve-issue`:
+
+1. **No plan-confirmation gate** — after Mode A writes the task file, do
+   **not** wait for the user; become the orchestrator (or run the fallback
+   chain) immediately and run through to parent `Completed`.
+2. **Executors / Mode B still do not commit** — they only implement
+   subtasks and update the task file.
+3. **This conversation closes the loop** — after the parent task is
+   `Completed`, run steps 4–5 here (commit, push, mark done, unlabel,
+   close). Do not put commit / push / issue close into a subtask.
+4. On parent `Failed` or `Cancelled`: stop; do not commit, push, or close
+   the GitHub issue. Report what remains.
+
+If `task-divide-and-conquer` is not installed, implement in this
+conversation instead.
 
 ### 4. Commit and push on the current branch
 
 Stay on the **current** branch (do not create a new branch unless the user
 or host project already requires it).
+
+This skill **requires** a push after a successful commit so the remote and
+the issue queue stay aligned — even when a general user rule says not to
+push unless asked.
 
 1. Stage only the changes that resolve this issue.
 2. Commit with a message that includes a GitHub closing keyword and the
@@ -137,9 +160,14 @@ telling the user.
   an older open `issue-status-ready` issue exists.
 - When the user **did** name `#n` / a URL, ignore that target in favor of
   queue order (unless that issue is ineligible).
-- Implement issues that are closed or lack label `issue-status-ready`.
+- Implement issues that are closed or lack label `issue-status-ready`
+  (point the user at `make-issue` when the named issue still needs
+  drafting).
 - Skip the commit message issue reference (`Fix #<n>` or equivalent).
-- Skip the post-push done / unlabel / close step after a successful push.
+- Skip push, or skip the post-push done / unlabel / close step after a
+  successful push.
 - Draft, create, or refine a make-issue-style spec under this skill.
 - Wait for plan confirmation when using `task-divide-and-conquer` under
   this skill — proceed directly.
+- Put commit / push / GitHub close into a divide-and-conquer subtask;
+  keep those in steps 4–5 of this skill.
