@@ -13,7 +13,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.5.0"
+  version: "1.6.0"
 ---
 
 # Task divide and conquer
@@ -46,8 +46,8 @@ continue it, when sub-agents are available.
 - Between subtasks, post one short status line. Do not ask the user to
   confirm again before continuing.
 - Stop when the parent status is `Failed`, `Completed`, or `Cancelled`, or
-  when the user cancels. On `Completed`, relay the commit message from the
-  last subtask's `Result`.
+  when the user cancels. On `Completed`, give a short wrap-up; do not draft
+  a commit message or commit.
 - If the executor returns and that subtask is still `Pending`, report that
   it did not finish and stop. Do not launch another executor for it.
 
@@ -93,7 +93,7 @@ the orchestrator instead of executing the subtask inline.
 | Status | Meaning |
 | --- | --- |
 | `In progress` | Created; subtasks remain |
-| `Completed` | All subtasks done, including the commit message offered to the user |
+| `Completed` | All subtasks done |
 | `Failed` | Task design problem found; reason recorded |
 | `Cancelled` | Stopped, usually by the user |
 
@@ -119,7 +119,7 @@ such a task. A redesign means a new parent task (new file).
 
 - [x] 1. Create parent task
 - [ ] 2. <Subtask title>
-- [ ] <N>. Propose a commit message
+- [ ] <N>. <Last subtask title>
 
 ## Subtasks
 
@@ -138,11 +138,13 @@ such a task. A redesign means a new parent task (new file).
 - **Acceptance**: <How to verify: tests, build, manual check.>
 - **Result**: —
 
-### <N>. Propose a commit message
+### <N>. <Last subtask title>
 
 - **Status**: Pending
-- **Goal**: Draft a commit message for this task's changes and hand it to the user. Do not commit.
-- **Acceptance**: The reply contains a commit message; this subtask created no commit.
+- **Goal**: <One outcome.>
+- **Scope**: <Files / modules / areas to touch.>
+- **Steps**: <Short ordered list.>
+- **Acceptance**: <How to verify: tests, build, manual check.>
 - **Result**: —
 ```
 
@@ -159,9 +161,9 @@ This conversation only plans. It does not implement subtask 2 itself.
    - depend only on earlier subtasks;
    - have concrete acceptance criteria;
    - leave the project in a working state where practical.
-3. Fixed bookends: subtask 1 is **Create parent task** (already `Done` when
-   the file is written); the last subtask is **Propose a commit message**
-   (draft the message only; never commit).
+3. Subtask 1 is **Create parent task** (already `Done` when the file is
+   written). Do not add a commit-message or wrap-up subtask; work subtasks
+   are the end of the plan.
 4. Write the file from the template with status `In progress`.
 5. Reply with the file path and the subtask list. Ask the user to **confirm**
    whether to run the remaining subtasks. Stop here — do not launch
@@ -185,26 +187,14 @@ This conversation only plans. It does not implement subtask 2 itself.
 5. Update the file:
    - subtask `Status: Done`, fill `Result` (what changed, files, anything the
      next subtask must know);
-   - tick its checklist box, bump `Progress` and `Updated`.
-6. Stop. Do not start the next subtask.
+   - tick its checklist box, bump `Progress` and `Updated`;
+   - if no `Pending` subtasks remain, set parent `Status: Completed`.
+6. Stop. Do not start the next subtask. Do not draft a commit message or
+   commit.
    - Executor: return the short summary to the orchestrator.
-   - Fallback: reply with what was done and the continue prompt for a new
-     conversation.
-
-### Commit-message subtask (last)
-
-The user decides whether to commit. Do not commit, stage, or push — some host
-projects forbid the agent from committing on its own.
-
-1. Review the diff of this task's changes (include the task file unless the
-   host project ignores `.task-divide-and-conquer/`).
-2. Draft one commit message in the host repo's style. Mark this subtask
-   `Done`, the parent `Completed`, and update `Progress`/`Updated`, so the
-   task file is final. Put the message in `Result`.
-3. Reply with the message and say the user may commit with it if they want.
-   The orchestrator relays that message when the executor returns.
-4. Stop. If the user does not commit, commits differently, or anything else
-   happens, do nothing further.
+   - Fallback: if the parent is still `In progress`, reply with what was
+     done and the continue prompt for a new conversation; if `Completed`,
+     give a short wrap-up only.
 
 ## Edge cases
 
