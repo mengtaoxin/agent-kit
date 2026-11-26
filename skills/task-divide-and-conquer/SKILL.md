@@ -13,7 +13,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.4.0"
+  version: "1.5.0"
 ---
 
 # Task divide and conquer
@@ -84,7 +84,7 @@ the orchestrator instead of executing the subtask inline.
 
 - Directory: `.task-divide-and-conquer/` at the project root (create if
   missing). The leading dot keeps these files out of the project's docs tree.
-- Name: `<YYYY-MM-DD>-<kebab-slug>.md`; never overwrite an existing file.
+- Name: `<YYYYMMDD>-<kebab-slug>.md`; never overwrite an existing file.
 - Write the content in the user's language. No task file exists unless a
   parent task was created.
 
