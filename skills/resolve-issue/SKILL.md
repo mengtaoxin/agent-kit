@@ -13,7 +13,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.2.1"
+  version: "1.3.0"
 ---
 
 # Resolve issue
@@ -82,27 +82,28 @@ this conversation.
 
 #### When using `task-divide-and-conquer`
 
-This skill **owns** the end-to-end issue lifecycle. Overrides while under
-`resolve-issue`:
+Plan the work with that skill. Under this skill:
 
-1. **No plan-confirmation gate** — after Mode A writes the task file, do
-   **not** wait for the user; become the orchestrator (or run the fallback
-   chain) immediately and run through to parent `Completed`.
-2. **Executors / Mode B still do not commit** — they only implement
-   subtasks and update the task file.
-3. **This conversation closes the loop** — after the parent task is
-   `Completed`, run steps 4–5 here (commit, push, mark done, unlabel,
-   close). Do not put commit / push / issue close into a subtask.
+1. **Skip its plan-confirmation wait** — after Mode A writes the task
+   file, become the orchestrator (or run the fallback chain) immediately
+   and run through to parent `Completed`. The user already asked to
+   resolve the issue.
+2. **Include a final commit / push subtask** — last work subtask should
+   land the changes per step 4 below (`Fix #<n>`, then push). Do not leave
+   commit / push to a post-hoc step outside the task file.
+3. After parent `Completed`, run step 5 here (mark done, unlabel, close).
 4. On parent `Failed` or `Cancelled`: stop; do not commit, push, or close
    the GitHub issue. Report what remains.
 
 If `task-divide-and-conquer` is not installed, implement in this
-conversation instead.
+conversation instead, then run steps 4–5 here.
 
 ### 4. Commit and push on the current branch
 
 Stay on the **current** branch (do not create a new branch unless the user
-or host project already requires it).
+or host project already requires it). When using
+`task-divide-and-conquer`, this step is the final subtask; otherwise run
+it in this conversation after implementation.
 
 This skill **requires** a push after a successful commit so the remote and
 the issue queue stay aligned — even when a general user rule says not to
@@ -168,6 +169,5 @@ telling the user.
   successful push.
 - Draft, create, or refine a make-issue-style spec under this skill.
 - Wait for plan confirmation when using `task-divide-and-conquer` under
-  this skill — proceed directly.
-- Put commit / push / GitHub close into a divide-and-conquer subtask;
-  keep those in steps 4–5 of this skill.
+  this skill — proceed directly and include commit / push as the final
+  subtask.

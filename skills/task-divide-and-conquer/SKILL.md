@@ -3,18 +3,17 @@ name: task-divide-and-conquer
 description: >-
   Splits a large user request into a parent task with serial subtasks tracked
   in a markdown file under `.task-divide-and-conquer/`. After the plan is
-  written, wait for the user to confirm before running further subtasks
-  (unless a calling skill such as `resolve-issue` overrides that gate). An
-  orchestrator then runs one subtask per sub-agent so no single context grows
-  too long. Hosts without sub-agents fall back to one subtask per conversation.
-  Use when the user asks to divide and conquer a big task, split work across
-  sub-agents or multiple conversations, create a parent task / subtasks,
-  continue or resume a task file, or cancel one; also when they mention
-  task-divide-and-conquer.
+  written, wait for the user to confirm before running further subtasks.
+  An orchestrator then runs one subtask per sub-agent so no single context
+  grows too long. Hosts without sub-agents fall back to one subtask per
+  conversation. Use when the user asks to divide and conquer a big task,
+  split work across sub-agents or multiple conversations, create a parent
+  task / subtasks, continue or resume a task file, or cancel one; also when
+  they mention task-divide-and-conquer.
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.7.0"
+  version: "1.8.0"
 ---
 
 # Task divide and conquer
@@ -31,21 +30,6 @@ When the host can launch sub-agents, an **orchestrator** runs the chain and
 each subtask runs in its own **executor** sub-agent. When it cannot, fall
 back to one subtask per new conversation.
 
-## Caller overrides
-
-Default rules in this skill apply when the user invoked divide-and-conquer
-directly. When another skill (notably **`resolve-issue`**) is driving the
-work and explicitly overrides:
-
-- **Plan confirmation** — skip the Mode A wait; start the orchestrator /
-  fallback chain as soon as the task file is written.
-- **Commit / push / issue close** — remain forbidden inside Mode B /
-  executors. The calling skill performs those steps after parent
-  `Completed`. Do not add a commit or wrap-up subtask for them.
-
-If the caller does not state an override, keep the defaults (wait for
-confirm; never commit from this skill).
-
 ## Roles
 
 ### Orchestrator
@@ -55,16 +39,14 @@ continue it, when sub-agents are available.
 
 - Do not implement subtask 2 or later in this context.
 - Only start the chain after the user has confirmed the plan (see Mode A),
-  after a caller override skipped that gate, or after they asked to
-  continue / orchestrate an existing task file.
+  or after they asked to continue / orchestrate an existing task file.
 - Launch **one** executor at a time, for the first `Pending` subtask only.
   Wait until it finishes, then re-read the task file. Decide the next step
   from the file, not from the sub-agent transcript.
 - Between subtasks, post one short status line. Do not ask the user to
   confirm again before continuing.
 - Stop when the parent status is `Failed`, `Completed`, or `Cancelled`, or
-  when the user cancels. On `Completed`, give a short wrap-up; do not draft
-  a commit message or commit.
+  when the user cancels. On `Completed`, give a short wrap-up.
 - If the executor returns and that subtask is still `Pending`, report that
   it did not finish and stop. Do not launch another executor for it.
 
@@ -179,16 +161,15 @@ This conversation only plans. It does not implement subtask 2 itself.
    - have concrete acceptance criteria;
    - leave the project in a working state where practical.
 3. Subtask 1 is **Create parent task** (already `Done` when the file is
-   written). Do not add a commit-message or wrap-up subtask; work subtasks
-   are the end of the plan.
+   written). If the user's request needs the work landed (commit / push /
+   similar), add that as an explicit final subtask — do not invent a
+   ceremonial wrap-up when they did not ask to land changes.
 4. Write the file from the template with status `In progress`.
-5. Unless a caller override skips confirmation: reply with the file path and
-   the subtask list, ask the user to **confirm** whether to run the remaining
-   subtasks, and stop — do not launch executors, become the orchestrator, or
-   start Mode B until they confirm. With a confirmation override (e.g.
-   `resolve-issue`): skip the ask and go straight to step 6.
-6. After the user confirms (for example yes / confirm / go ahead / continue),
-   or immediately when a caller override skipped confirmation:
+5. Reply with the file path and the subtask list, ask the user to
+   **confirm** whether to run the remaining subtasks, and stop — do not
+   launch executors, become the orchestrator, or start Mode B until they
+   confirm.
+6. After the user confirms (for example yes / confirm / go ahead / continue):
    - If sub-agents are available, become the orchestrator and run the chain.
    - Otherwise reply with the fallback continue prompt.
    If they decline or want changes, stop. Do not start the chain. On a
@@ -203,14 +184,14 @@ This conversation only plans. It does not implement subtask 2 itself.
 2. If the status is terminal, report it and stop.
 3. Pick the **first** `Pending` subtask. Read the requirement and the
    `Result` of earlier subtasks for context.
-4. Execute only that subtask and verify its acceptance criteria.
+4. Execute only that subtask and verify its acceptance criteria. Commit or
+   push only when this subtask's goal explicitly requires it.
 5. Update the file:
    - subtask `Status: Done`, fill `Result` (what changed, files, anything the
      next subtask must know);
    - tick its checklist box, bump `Progress` and `Updated`;
    - if no `Pending` subtasks remain, set parent `Status: Completed`.
-6. Stop. Do not start the next subtask. Do not draft a commit message or
-   commit.
+6. Stop. Do not start the next subtask.
    - Executor: return the short summary to the orchestrator.
    - Fallback: if the parent is still `In progress`, reply with what was
      done and the continue prompt for a new conversation; if `Completed`,
