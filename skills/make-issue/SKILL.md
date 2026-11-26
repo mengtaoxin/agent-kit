@@ -14,7 +14,7 @@ description: >-
 license: MIT
 metadata:
   author: mengtaoxin
-  version: "1.3.1"
+  version: "1.4.0"
 ---
 
 # Make issue
@@ -146,10 +146,10 @@ updated: <yyyy-MM-dd>
 5. Create or update via `gh` (prefer `--body-file` for multiline bodies):
 
    ```bash
-   # create
-   gh issue create --title "<title>" --body-file <path>
+   # create — always assign to the authenticated user
+   gh issue create --title "<title>" --body-file <path> --assignee @me
    # if status is ready:
-   # gh issue create --title "<title>" --body-file <path> --label issue-status-ready
+   # gh issue create --title "<title>" --body-file <path> --assignee @me --label issue-status-ready
 
    # update body (and title if needed)
    gh issue edit <n> --body-file <path>
@@ -162,12 +162,14 @@ updated: <yyyy-MM-dd>
    # gh issue close <n>
    ```
 
-   On create, set `created` and `updated` to today's local date. On
-   update, keep `created`, set `updated` to today. Apply the label
-   table above on every create/update. If `gh issue create` / `edit` /
-   `close` / `label` fails (permissions, network, missing issue):
-   **stop** and tell the user to fix `gh` / repo permissions. Do not
-   retry with a different storage approach.
+   On create, set `created` and `updated` to today's local date, and
+   always pass `--assignee @me` so the issue is assigned to the
+   authenticated GitHub user. On update, keep `created`, set `updated`
+   to today; do not change assignees unless the user asks. Apply the
+   label table above on every create/update. If `gh issue create` /
+   `edit` / `close` / `label` fails (permissions, network, missing
+   issue): **stop** and tell the user to fix `gh` / repo permissions.
+   Do not retry with a different storage approach.
 6. Reply with the issue URL (or `#n`) and status.
    - `draft`: summarize open questions; ask the user to answer them.
      As answers arrive, update the same issue: resolve questions, refresh
